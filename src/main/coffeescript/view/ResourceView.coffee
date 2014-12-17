@@ -1,16 +1,16 @@
 class ResourceView extends Backbone.View
   initialize: (opts={}) ->
     @auths = opts.auths
-    if "" is @model.description 
+    if "" is @model.description
       @model.description = null
 
   render: ->
+    if @model.description
+      @model.summary = @model.description
     $(@el).html(Handlebars.templates.resource(@model))
 
     methods = {}
 
-    if @model.description
-      @model.summary = @model.description
     # Render each operation
     for operation in @model.operationsArray
       counter = 0
@@ -24,12 +24,12 @@ class ResourceView extends Backbone.View
 
       operation.nickname = id
       operation.parentId = @model.id
-      @addOperation operation 
+      @addOperation operation
 
     $('.toggleEndpointList', @el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'))
     $('.collapseResource', @el).click(this.callDocs.bind(this, 'collapseOperationsForResource'))
     $('.expandResource', @el).click(this.callDocs.bind(this, 'expandOperationsForResource'))
-    
+
     return @
 
   addOperation: (operation) ->

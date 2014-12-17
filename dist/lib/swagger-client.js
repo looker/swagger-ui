@@ -383,6 +383,8 @@ SwaggerClient.prototype.buildFromSpec = function(response) {
   this.schemes = response.schemes || [];
   this.scheme;
   this.basePath = response.basePath || '';
+  this.tags = response.tags || [];
+  this.tags_names = [];
   this.apis = {};
   this.apisArray = [];
   this.consumes = response.consumes;
@@ -413,6 +415,18 @@ SwaggerClient.prototype.buildFromSpec = function(response) {
     var model = new Model(key, this.definitions[key]);
     if(model) {
       models[key] = model;
+    }
+  }
+
+  // get tags, create initial ordered OperationGroup array
+  if(this.tags.length > 0) {
+    var i;
+    for(i = 0; i < this.tags.length; i++) {
+      var name = this.tags[i].name;
+      if(name) {
+        this.apisArray.push(new OperationGroup(name, this.tags[i].description || ''));
+        this.tags_names.push(name);
+      }
     }
   }
 
@@ -453,7 +467,10 @@ SwaggerClient.prototype.buildFromSpec = function(response) {
               operationGroup.label = tag;
               operationGroup.apis = [];
               this[tag].help = this.help.bind(operationGroup);
-              this.apisArray.push(new OperationGroup(tag, operationObject));
+              if(this.tags_names.indexOf(tag) == -1) {
+                this.apisArray.push(new OperationGroup(tag, operationObject.description || ''));
+                this.tags_names.push(tag);
+              }
             }
             operationGroup[operationId] = operationObject.execute.bind(operationObject);
             operationGroup[operationId].help = operationObject.help.bind(operationObject);
@@ -526,14 +543,14 @@ SwaggerClient.prototype.fail = function(message) {
   throw message;
 };
 
-var OperationGroup = function(tag, operation) {
+var OperationGroup = function(tag, description) {
   this.tag = tag;
   this.path = tag;
   this.name = tag;
-  this.operation = operation;
+  // this.operation = operation;
   this.operationsArray = [];
 
-  this.description = operation.description || "";
+  this.description = description;
 }
 
 var Operation = function(parent, operationId, httpMethod, path, args, definitions) {
