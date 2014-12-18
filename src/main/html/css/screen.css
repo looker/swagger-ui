@@ -669,6 +669,17 @@
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.path a:hover {
   text-decoration: underline;
 }
+.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.nickname {
+  padding-left: 10px;
+}
+.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.nickname a {
+  color: red;
+  font-style: italic;
+  text-decoration: none;
+}
+.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.nickname a:hover {
+  text-decoration: underline;
+}
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.http_method a {
   text-transform: uppercase;
   text-decoration: none;
@@ -1221,4 +1232,21 @@
   min-height: 30px;
   text-align: center;
   padding-top: 10px;
+}
+.swagger-section #credentials_div {
+  float: right;
+  padding: 3px;
+}
+.swagger-section #credentials_div label {
+  display: block;
+  float: left;
+}
+.swagger-section #credentials_div #client_id,
+.swagger-section #credentials_div #client_secret {
+  display: inline-block;
+  float: right;
+}
+.swagger-section #credentials_div #log_in_or_out {
+  display: inline-block;
+  float: left;
 }
