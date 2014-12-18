@@ -160,6 +160,16 @@
       }
       return false;
     }
+
+    function changeLanguage()
+    {
+      $(".http_method").toggle();
+      $(".path").toggle();
+      $(".nickname").toggle();
+      $("#change_language").prop('value', $('#change_language').val() == 'REST' ? 'Ruby' : 'REST');
+      return false;
+    }
+
   </script>
 
 </head>
@@ -188,6 +198,13 @@
       <label for="client_secret">client_secret:</label> <input type="password" name="client_secret" id="client_secret"><br>
       <input type="submit" name='log_in_or_out' id='log_in_or_out' value="Login">
     </form>
+
+    <div id="language_div">
+      <form id='language' action="" onsubmit="return changeLanguage();">
+        <input type="submit" name='change_language' id='change_language' value="REST">
+      </form>
+    </div>
+
   </div>
 
   <div id="swagger-ui-container" class="swagger-ui-wrap"></div>

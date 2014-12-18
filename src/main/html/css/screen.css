@@ -673,8 +673,7 @@
   padding-left: 10px;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.nickname a {
-  color: red;
-  font-style: italic;
+  color: black;
   text-decoration: none;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading h3 span.nickname a:hover {
@@ -1247,6 +1246,14 @@
   float: right;
 }
 .swagger-section #credentials_div #log_in_or_out {
+  display: inline-block;
+  float: left;
+}
+.swagger-section #credentials_div #language_div {
+  float: right;
+  padding: 10px;
+}
+.swagger-section #credentials_div #language_div #change_language {
   display: inline-block;
   float: left;
 }
