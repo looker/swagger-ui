@@ -611,20 +611,16 @@ var Operation = function(parent, operationId, httpMethod, path, args, definition
   }
 
   this.ruby_signature = this.nickname+'(';
-  for(i = 0; i < this.parameters.length; i++) {
-    var param = this.parameters[i];
-    if(param.in == 'path') {
-      if (this.ruby_signature.slice(-1) != '(')
-        this.ruby_signature += ', ';
-      this.ruby_signature += param.name;
-    }
-  }
-  for(i = 0; i < this.parameters.length; i++) {
-    var param = this.parameters[i];
-    if(param.in == 'body') {
-      if (this.ruby_signature.slice(-1) != '(')
-        this.ruby_signature += ', ';
-      this.ruby_signature += param.name;
+  var parts = ['path', 'body'];
+  var k;
+  for(k = 0; k < 2; k++) {
+    for(i = 0; i < this.parameters.length; i++) {
+      var param = this.parameters[i];
+      if(param.in == parts[k]) {
+        if(this.ruby_signature.slice(-1) != '(')
+          this.ruby_signature += ', ';
+        this.ruby_signature += param.name;
+      }
     }
   }
   this.ruby_signature += ')';
