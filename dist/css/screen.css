@@ -1253,6 +1253,10 @@
   float: right;
   padding: 10px;
 }
+.swagger-section #credentials_div #language_div #load_swagger {
+  display: inline-block;
+  float: left;
+}
 .swagger-section #credentials_div #language_div #change_language {
   display: inline-block;
   float: left;
