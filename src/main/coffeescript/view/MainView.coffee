@@ -25,6 +25,11 @@ class MainView extends Backbone.View
     if !@model.info.version
       @model.info.version = @model.apiVersion
 
+    if @model.info.description
+      @model.info.description = marked(@model.info.description)
+    else
+      @model.info.description = ''
+
     # jband - ignore validator for now
     if false && @model.swaggerVersion is "2.0"
       if "validatorUrl" of opts.swaggerOptions
