@@ -968,7 +968,7 @@ Operation.prototype.setContentTypes = function(args, opts) {
   }
 
   // if there's a body, need to set the accepts header via requestContentType
-  if (body && (this.type === 'post' || this.type === 'put' || this.type === 'patch' || this.type === 'delete')) {
+  if (body && (this.method === 'post' || this.method === 'put' || this.method === 'patch' || this.method === 'delete')) {
     if (opts.requestContentType)
       consumes = opts.requestContentType;
   } else {
@@ -979,9 +979,9 @@ Operation.prototype.setContentTypes = function(args, opts) {
       else
         consumes = 'application/x-www-form-urlencoded';
     }
-    else if (this.type == 'DELETE')
+    else if (this.method == 'delete')
       body = '{}';
-    else if (this.type != 'DELETE')
+    else if (this.method != 'delete')
       accepts = null;
   }
 
