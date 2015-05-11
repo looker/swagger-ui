@@ -63,6 +63,9 @@
         sorter : "alpha"
       });
 
+      setInterval(function(){window.updateLoginButton()}, 5000);
+      $("#log_in_or_out").mouseenter(function(){window.updateLoginButton()});
+
       window.swaggerUi.load();
   });
   </script>
@@ -71,12 +74,18 @@
     var access_token = null
     var access_token_expires = null
 
+
+    function updateLoginButton()
+    {
+      $("#log_in_or_out").prop('value', (isLoggedIn() ? 'Logout' : 'Login'));
+    }
+
     function setAuth(token, expires)
     {
       access_token = token
       access_token_expires = expires
       window.authorizations.add("token", new ApiKeyAuthorization("Authorization", "token "+token, "header"));
-      $("#log_in_or_out").prop('value', 'Logout');
+      updateLoginButton()
     }
 
     function clearAuth()
@@ -84,7 +93,7 @@
       access_token = null
       access_token_expires = null
       window.authorizations.remove("token")
-      $("#log_in_or_out").prop('value', 'Login');
+      updateLoginButton()
     }
 
     function isLoggedIn()
