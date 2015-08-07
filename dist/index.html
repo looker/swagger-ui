@@ -175,10 +175,19 @@
 
     function changeLanguage()
     {
-      $(".http_method").toggle();
-      $(".path").toggle();
-      $(".nickname").toggle();
-      $("#change_language").prop('value', $('#change_language').val() == 'REST' ? 'Ruby' : 'REST');
+      if($('#change_language').val() == 'SDK/rest') {
+        $(".http_method").show();
+        $(".path").show();
+        $(".sdk").hide();
+        $(".nickname").hide();
+        $("#change_language").prop('value', 'sdk/REST');
+      } else {
+        $(".http_method").hide();
+        $(".path").hide();
+        $(".sdk").show();
+        $(".nickname").show();
+        $("#change_language").prop('value', 'SDK/rest');
+      }
       return false;
     }
 
@@ -222,7 +231,7 @@
         <input type="submit" name='load_swagger' id='load_swagger' value="Load">
       </form>
       <form id='language' action="" onsubmit="return changeLanguage();">
-        <input type="submit" name='change_language' id='change_language' value="REST">
+        <input type="submit" name='change_language' id='change_language' value="SDK/rest">
       </form>
     </div>
 

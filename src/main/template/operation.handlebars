@@ -3,14 +3,17 @@
     <li class='{{method}} operation' id='{{parentId}}_{{nickname}}'>
       <div class='heading'>
         <h3>
-          <span class='http_method'>
+          <span class='sdk'>
+          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
+          </span>
+          <span class='http_method' hidden='hidden'>
           <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
           </span>
-          <span class='path'>
+          <span class='path' hidden='hidden'>
           <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
           </span>
-          <span class='nickname' hidden='hidden'>
-            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{{ruby_signature}}}</a>
+          <span class='nickname'>
+          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{{ruby_signature}}}</a>
           </span>
         </h3>
         <ul class='options'>
