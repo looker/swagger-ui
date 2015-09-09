@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Looker API 3.0</title>
+  <title>Looker API</title>
   <link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
   <link href='css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -208,6 +208,7 @@
     function loadSwagger()
     {
       window.swaggerUi.headerView.trigger('update-swagger-ui', {url: DEFAULT_SWAGGER_URL})
+      changeLanguage('sdk');
       return false;
     }
 
@@ -219,7 +220,7 @@
 
   <div id='header' class='looker'>
     <div class="swagger-ui-wrap">
-      <h1 id="logo">Looker API 3.0</h1>
+      <h1 id="logo">Looker API</h1>
       <form id='credentials' action='' onsubmit='return loginOrOut();'>
         <div class='input'>
           <input placeholder='Client ID' id='client_id' name='client_id' type='text'/>
