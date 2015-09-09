@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Looker API</title>
+  <title>Looker API 3.0</title>
   <link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
   <link href='css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
   <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
@@ -57,14 +57,18 @@
         },
         onFailure: function(data) {
           log("Unable to Load SwaggerUI");
-          window.swaggerUi.showMessage(data+"<br>Please login with a valid API3 key and press 'Load'.")
+          window.swaggerUi.showMessage(
+            "<p>Looks like you need to log in! Don't have a client ID and secret? Go to Admin > User, " +
+            "click the edit button next to your user, and generate an API 3 key.</p>" +
+            "<p id='error-message'>Error returned by server: <b>" + data + "</b></p>"
+          );
         },
         docExpansion: "none",
         sorter : "alpha"
       });
 
       setInterval(function(){window.updateLoginButton()}, 5000);
-      $("#log_in_or_out").mouseenter(function(){window.updateLoginButton()});
+      $('#login').mouseenter(function(){window.updateLoginButton()});
 
       window.swaggerUi.load();
   });
@@ -77,7 +81,13 @@
 
     function updateLoginButton()
     {
-      $("#log_in_or_out").prop('value', (isLoggedIn() ? 'Logout' : 'Login'));
+      if (isLoggedIn()) {
+        $('#login').prop('value', 'Log Out');
+        $('#client_id, #client_secret').css('visibility', 'hidden');
+      } else {
+        $('#login').prop('value', 'Log In');
+        $('#client_id, #client_secret').css('visibility', 'visible');
+      }
     }
 
     function setAuth(token, expires)
@@ -145,6 +155,8 @@
           setAuth(access_token, access_token_expires)
 
           console.log("login succeeded")
+
+          loadSwagger();
         },
         error: function(err) {
           console.log("login FAILED")
@@ -163,8 +175,8 @@
         client_id = $('#client_id').val()
         client_secret = $('#client_secret').val()
         var reason = "";
-        reason += client_id ? '' : 'client_id is required\n'
-        reason += client_secret ? '' : 'client_secret is required\n'
+        reason += client_id ? '' : 'Client ID is required\n'
+        reason += client_secret ? '' : 'Client Secret is required\n'
         if (reason != "")
           alert(reason);
         else
@@ -173,21 +185,23 @@
       return false;
     }
 
-    function changeLanguage()
+    function changeLanguage(language)
     {
-      if($('#change_language').val() == 'SDK/rest') {
+      if(language == 'http') {
         $(".http_method").show();
         $(".path").show();
         $(".sdk").hide();
         $(".nickname").hide();
-        $("#change_language").prop('value', 'sdk/REST');
       } else {
         $(".http_method").hide();
         $(".path").hide();
         $(".sdk").show();
         $(".nickname").show();
-        $("#change_language").prop('value', 'SDK/rest');
       }
+
+      $('#change_language_http').toggleClass('selected', language == 'http')
+      $('#change_language_sdk').toggleClass('selected', language == 'sdk')
+
       return false;
     }
 
@@ -203,40 +217,34 @@
 
 <body class="swagger-section">
 
-<!--
-<div id='header'>
-  <div class="swagger-ui-wrap">
-    <a id="logo" href="www.looker.com">Looker</a>
-    <form id='api_selector'>
-      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
-      <div class='input'><a id="explore" href="#">Explore</a></div>
-    </form>
-  </div>
-</div>
- -->
-
-  <div id="message-bar" class="swagger-ui-wrap">&nbsp;</div>
-
-  <div id="credentials_div">
-    <form id='credentials' action="" onsubmit="return loginOrOut();">
-      Login with API3 key:<br>
-      <label for="client_id">client_id:</label> <input type="text" name="client_id" id="client_id"><br>
-      <label for="client_secret">client_secret:</label> <input type="password" name="client_secret" id="client_secret"><br>
-      <input type="submit" name='log_in_or_out' id='log_in_or_out' value="Login">
-    </form>
-
-    <div id="language_div">
-      <form id='load' action="" onsubmit="return loadSwagger();">
-        <input type="submit" name='load_swagger' id='load_swagger' value="Load">
-      </form>
-      <form id='language' action="" onsubmit="return changeLanguage();">
-        <input type="submit" name='change_language' id='change_language' value="SDK/rest">
+  <div id='header' class='looker'>
+    <div class="swagger-ui-wrap">
+      <h1 id="logo">Looker API 3.0</h1>
+      <form id='credentials' action='' onsubmit='return loginOrOut();'>
+        <div class='input'>
+          <input placeholder='Client ID' id='client_id' name='client_id' type='text'/>
+        </div>
+        <div class='input'>
+          <input placeholder='Client Secret' id='client_secret' name='client_secret' type='password'/>
+        </div>
+        <div class='input'>
+          <input id='login' name='log_in_or_out' value='Log In' type='submit' />
+        </div>
       </form>
     </div>
-
   </div>
 
-  <div id="swagger-ui-container" class="swagger-ui-wrap"></div>
+  <div class='swagger-ui-wrap looker'>
+    <div id='other-buttons'>
+      <form id='load' action="" onsubmit="return loadSwagger();">
+        <input type="submit" name='load_swagger' id='load_swagger' value="Reload">
+      </form>
+      <input type='button' id='change_language_http' onclick='changeLanguage("http")' value='HTTP'><input type='button' id='change_language_sdk' class='selected' onclick='changeLanguage("sdk")' value='SDK'>
+    </div>
+
+    <div id='message-bar' class='swagger-ui-wrap looker'>&nbsp;</div>
+
+    <div id='swagger-ui-container'></div>
+  </div>
 </body>
 </html>
