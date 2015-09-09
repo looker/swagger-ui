@@ -1471,6 +1471,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
       $('#message-bar').removeClass('message-fail');
       $('#message-bar').addClass('message-success');
+      $('#message-bar').toggle(!!data);
       return $('#message-bar').html(data);
     };
 
@@ -1481,6 +1482,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       }
       $('#message-bar').removeClass('message-success');
       $('#message-bar').addClass('message-fail');
+      $('#message-bar').toggle(!!data);
       val = $('#message-bar').html(data);
       if (this.options.onFailure != null) {
         this.options.onFailure(data);

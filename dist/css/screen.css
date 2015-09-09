@@ -1241,32 +1241,124 @@
   text-align: center;
   padding-top: 10px;
 }
-.swagger-section #credentials_div {
+.swagger-section #header.looker {
+  background: #2e343f;
+}
+.swagger-section #header.looker #logo {
+  color: #fff;
+  display: inline-block;
+  font-weight: normal;
+  padding: 0;
+  vertical-align: middle;
+}
+.swagger-section #header.looker #credentials {
   float: right;
-  padding: 3px;
 }
-.swagger-section #credentials_div label {
-  display: block;
-  float: left;
-}
-.swagger-section #credentials_div #client_id,
-.swagger-section #credentials_div #client_secret {
+.swagger-section #header.looker #credentials .input {
   display: inline-block;
+  float: none;
+}
+.swagger-section #header.looker #credentials .input > input {
+  background: transparent;
+  border: 1px solid #81858b;
+  border-radius: 2px;
+  color: #81858b;
+  font-size: 12px;
+  margin-left: 10px;
+  padding: 4px 8px;
+  width: 280px;
+  height: 20px;
+}
+.swagger-section #header.looker #credentials .input > input:focus {
+  border-color: #d1d3d8;
+  color: #d1d3d8;
+  outline: none;
+}
+.swagger-section #header.looker #credentials #login {
+  background: #76678b linear-gradient(to bottom, #706080, #605070);
+  border: 1px solid #564e66;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 6px;
+  text-decoration: none;
+  width: 80px;
+  height: auto;
+}
+.swagger-section #header.looker #credentials #login:hover {
+  background: #76678b linear-gradient(to bottom, #76678b, #66597c);
+}
+.swagger-section #header.looker #credentials #login:focus {
+  box-shadow: 0 0 3px 0 rgba(210, 149, 232, 0.7);
+  outline: none;
+}
+.swagger-section #message-bar.looker {
+  background-color: #deedef;
+  border-radius: 3px;
+  color: #6a6b68;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0 auto 20px;
+  padding: 10px 200px 10px 10px;
+  text-align: left;
+  min-height: 20px;
+}
+.swagger-section #message-bar.looker #error-message {
+  color: #777;
+  font-size: 12px;
+  padding-bottom: 0;
+}
+.swagger-section #other-buttons {
   float: right;
+  margin: 6px 6px 0 0;
 }
-.swagger-section #credentials_div #log_in_or_out {
+.swagger-section #other-buttons form {
   display: inline-block;
-  float: left;
 }
-.swagger-section #credentials_div #language_div {
-  float: right;
-  padding: 10px;
+.swagger-section #other-buttons input {
+  border: 1px solid #cbcbcb;
+  border-radius: 2px;
+  background: #f0f0f0 linear-gradient(to bottom, #f0f0f0, #dfdfdf);
+  color: #696969;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 1.53846;
+  margin-bottom: 0;
+  padding: 4px 8px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  min-width: 90px;
 }
-.swagger-section #credentials_div #language_div #load_swagger {
-  display: inline-block;
-  float: left;
+.swagger-section #other-buttons input:hover {
+  background: #ffffff linear-gradient(to bottom, #ffffff, #eeeeee) !important;
+  border: 1px solid #cbcbcb;
+  color: #696969;
 }
-.swagger-section #credentials_div #language_div #change_language {
-  display: inline-block;
-  float: left;
+.swagger-section #other-buttons input:focus {
+  border: 1px solid #A3D4DA;
+  box-shadow: 0 0 3px 0 rgba(124, 220, 246, 0.7);
+  outline: none;
+}
+.swagger-section #other-buttons #change_language_http {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  min-width: 0;
+}
+.swagger-section #other-buttons #change_language_sdk {
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  min-width: 0;
+}
+.swagger-section #other-buttons #change_language_http.selected,
+.swagger-section #other-buttons #change_language_sdk.selected,
+.swagger-section #other-buttons #change_language_http.selected:hover,
+.swagger-section #other-buttons #change_language_sdk.selected:hover {
+  background: #f0f0f0 linear-gradient(to bottom, #dfdfdf, #f0f0f0) !important;
+}
+.swagger-section .swagger-ui-wrap.looker {
+  margin-top: 30px;
+  padding: 0 20px;
 }
