@@ -1217,7 +1217,8 @@ Property.prototype.sampleValue = function(isArray, ignoredModels) {
 
 getStringSignature = function(obj) {
   var str = '';
-  if(obj.type === 'array') {
+  var isArray = obj.type === 'array'
+  if(isArray) {
     obj = (obj.items || obj['$ref'] || {});
     str += 'Array[';
   }
@@ -1243,7 +1244,7 @@ getStringSignature = function(obj) {
     str += simpleRef(obj['$ref']);
   else
     str += obj.type;
-  if(obj.type === 'array')
+  if(isArray)
     str += ']';
   return str;
 }
@@ -1258,9 +1259,11 @@ simpleRef = function(name) {
 }
 
 Property.prototype.toString = function() {
-  var str = getStringSignature(this.obj);
+  var str = getStringSignature(this.schema);
   if(str !== '') {
     str = '<span class="propName ' + this.required + '">' + this.name + '</span> (<span class="propType">' + str + '</span>';
+    if(this.obj && this.obj.readOnly)
+      str += ', <span class="propReadOnlyKey">read-only</span>';
     if(!this.required)
       str += ', <span class="propOptKey">optional</span>';
     str += ')';

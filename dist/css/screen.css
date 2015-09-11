@@ -378,6 +378,9 @@
 .swagger-section .swagger-ui-wrap .model-signature .propOptKey {
   font-style: italic;
 }
+.swagger-section .swagger-ui-wrap .model-signature .propReadOnlyKey {
+  font-style: italic;
+}
 .swagger-section .swagger-ui-wrap .model-signature .description .strong {
   font-weight: bold;
   color: #000;
