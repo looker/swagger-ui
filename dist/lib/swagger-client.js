@@ -455,6 +455,10 @@ SwaggerClient.prototype.buildFromSpec = function(response) {
           operation,
           this.definitions
         );
+        // discard any operations marked as undocumented while building the document
+        if(operationObject.undocumented) {
+          continue;
+        }
         // bind this operation's execute command to the api
         if(tags.length > 0) {
           var i;
@@ -495,6 +499,14 @@ SwaggerClient.prototype.buildFromSpec = function(response) {
       }
     }
   }
+
+  // Remove any OperationGroups that have no Operations
+  for(j = this.apisArray.length-1; j >= 0; j--) {
+    if(0 == this.apisArray[j].operationsArray.length) {
+      this.apisArray.splice(j, 1);
+    }
+  }
+
   this.isBuilt = true;
   if (this.success)
     this.success();
@@ -557,6 +569,7 @@ var Operation = function(parent, operationId, httpMethod, path, args, definition
   var errors = [];
   this.operation = args;
   this.deprecated = args.deprecated;
+  this.undocumented = args['x-looker-status'] == 'undocumented'
   this.consumes = args.consumes;
   this.produces = args.produces;
   this.parent = parent;
