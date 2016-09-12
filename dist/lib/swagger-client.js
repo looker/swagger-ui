@@ -569,7 +569,15 @@ var Operation = function(parent, operationId, httpMethod, path, args, definition
   var errors = [];
   this.operation = args;
   this.deprecated = args.deprecated;
-  this.undocumented = args['x-looker-status'] == 'undocumented'
+  this.undocumented = args['x-looker-status'] == 'undocumented';
+
+  this.looker_status = args['x-looker-status'];
+  switch (this.looker_status) {
+    case 'beta': this.looker_status_text = 'Beta'; break;
+    case 'deprecated': this.looker_status_text = 'Deprecated'; break;
+    default: this.looker_status_text = '';
+  }
+
   this.consumes = args.consumes;
   this.produces = args.produces;
   this.parent = parent;

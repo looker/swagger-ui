@@ -596,7 +596,7 @@
                                             text-decoration: underline;
                                         }
                                     }
-                                    span.nickname {
+                                    span.sdk_fn_name {
                                         padding-left: 10px;
                                         a {
                                             color: black;
@@ -629,22 +629,51 @@
                                         padding: 0;
                                     }
                                 }
-                                ul.options {
+                                span.status {
                                     overflow: hidden;
-                                    padding: 0;
                                     display: block;
                                     clear: none;
                                     float: right;
-                                    margin: 6px 10px 0 0;
-                                    li {
-                                        float: left;
-                                        clear: none;
+                                    width: auto;
+                                    line-height: 1.1em;
+                                    margin: 0;
+                                    padding: 0;
+                                    a {
+                                        color: black;
+                                        background-color: #cccccc;
+                                        text-transform: uppercase;
+                                        text-decoration: none;
+                                        text-align: center;
+                                        display: inline-block;
+                                        font-size: 0.7em;
+                                        padding: 9px 7px 7px 7px;
                                         margin: 0;
-                                        padding: 2px 10px;
-                                        font-size: 0.9em;
+                                        -moz-border-radius: 2px;
+                                        -webkit-border-radius: 2px;
+                                        -o-border-radius: 2px;
+                                        -ms-border-radius: 2px;
+                                        -khtml-border-radius: 2px;
+                                        border-radius: 2px;
+                                    }
+                                }
+                                ul.options {
+                                    overflow: hidden;
+                                    display: block;
+                                    clear: none;
+                                    float: right;
+                                    margin-top: 6px;
+                                    font-size: 0.9em;
+                                    padding: 2px 10px;
+                                    li {
                                         a {
+                                            display: block;
                                             text-decoration: none;
+                                            text-align: left;
+                                            width: 250px;
                                         }
+                                    }
+                                    &:last-child, &.last {
+                                        border-left: 1px;
                                     }
                                 }
                                 ul.options {

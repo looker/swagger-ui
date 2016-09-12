@@ -3,24 +3,30 @@
     <li class='{{method}} operation' id='{{parentId}}_{{nickname}}'>
       <div class='heading'>
         <h3>
-          <span class='sdk'>
-          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
+          <span class='sdk sdk_header_element'>
+            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
           </span>
-          <span class='http_method' hidden='hidden'>
-          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
+          <span class='http_method http_header_element' hidden='hidden'>
+            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
           </span>
-          <span class='path' hidden='hidden'>
-          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
+          <span class='path http_header_element' hidden='hidden'>
+            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
           </span>
-          <span class='nickname'>
-          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{{ruby_signature}}}</a>
+          <span class='sdk_fn_name sdk_header_element'>
+            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{{ruby_signature}}}</a>
           </span>
         </h3>
         <ul class='options'>
           <li>
-          <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{{summary}}}</a>
+            <a href='#!/{{parentId}}/{{nickname}}' class='toggleOperation nickname'>{{{summary}}}</a>
           </li>
         </ul>
+        <span class='status'>
+          <a href='#!/{{parentId}}/{{nickname}}'
+             class="toggleOperation status_{{looker_status}}">
+            {{looker_status_text}}
+          </a>
+        </span>
       </div>
       <div class='content' id='{{parentId}}_{{nickname}}_content' style='display:none'>
         {{#if deprecated}}

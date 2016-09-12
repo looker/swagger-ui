@@ -187,16 +187,12 @@
 
     function changeLanguage(language)
     {
-      if(language == 'http') {
-        $(".http_method").show();
-        $(".path").show();
-        $(".sdk").hide();
-        $(".nickname").hide();
+      if (language == 'http') {
+        $(".sdk_header_element").hide();
+        $(".http_header_element").show();
       } else {
-        $(".http_method").hide();
-        $(".path").hide();
-        $(".sdk").show();
-        $(".nickname").show();
+        $(".http_header_element").hide();
+        $(".sdk_header_element").show();
       }
 
       $('#change_language_http').toggleClass('selected', language == 'http')
