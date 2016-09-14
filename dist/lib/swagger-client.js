@@ -573,9 +573,17 @@ var Operation = function(parent, operationId, httpMethod, path, args, definition
 
   this.looker_status = args['x-looker-status'];
   switch (this.looker_status) {
-    case 'beta': this.looker_status_text = 'Beta'; break;
-    case 'deprecated': this.looker_status_text = 'Deprecated'; break;
-    default: this.looker_status_text = '';
+    case 'beta':
+      this.looker_status_text = '&beta;';
+      this.looker_status_description = 'Beta - This endpoint is in active development and may receive breaking changes in future product releases.';
+      break;
+    case 'deprecated':
+      this.looker_status_text = '&Omega;';
+      this.looker_status_description = 'Deprecated - This endpoint is obsolete and should no longer be used. It will be removed from the API in the future.';
+      break;
+    default:
+      this.looker_status_text = '';
+      this.looker_status_description
   }
 
   this.consumes = args.consumes;

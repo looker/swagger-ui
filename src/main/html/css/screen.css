@@ -710,26 +710,24 @@
   clear: none;
   float: right;
   width: auto;
-  line-height: 1.1em;
   margin: 0;
   padding: 0;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading span.status a {
-  color: black;
-  background-color: #cccccc;
-  text-transform: uppercase;
+  color: white;
+  background-color: #0f6ab4;
   text-decoration: none;
   text-align: center;
+  font-size: 0.5em;
   display: inline-block;
-  font-size: 0.7em;
-  padding: 9px 7px 7px 7px;
-  margin: 0;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -o-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -khtml-border-radius: 2px;
-  border-radius: 2px;
+  padding: 5px;
+  margin-top: 8px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -o-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -khtml-border-radius: 15px;
+  border-radius: 15px;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading ul.options {
   overflow: hidden;
@@ -738,20 +736,10 @@
   float: right;
   margin-top: 6px;
   font-size: 0.9em;
-  padding: 2px 10px;
+  padding: 2px;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading ul.options li a {
-  display: block;
   text-decoration: none;
-  text-align: left;
-  width: 250px;
-}
-.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading ul.options:last-child,
-.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading ul.options.last {
-  border-left: 1px;
-}
-.swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading ul.options li.access {
-  color: black;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.content {
   border-top: none;
