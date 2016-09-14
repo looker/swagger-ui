@@ -522,7 +522,7 @@ function program24(depth0,data) {
   if (helper = helpers.ruby_signature) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.ruby_signature); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</a>\n          </span>\n        </h3>\n        <span class='status'>\n          <a href='#!/";
+  buffer += "</a>\n          </span>\n        </h3>\n        <span class='status tooltip_anchor'>\n          <a href='#!/";
   if (helper = helpers.parentId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.parentId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -538,7 +538,11 @@ function program24(depth0,data) {
   if (helper = helpers.looker_status_text) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.looker_status_text); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n          </a>\n        </span>\n        <ul class='options'>\n          <li>\n            <a href='#!/";
+  buffer += "\n          </a>\n          <span class='tooltip_popup'>\n            ";
+  if (helper = helpers.looker_status_description) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.looker_status_description); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "\n          </span>\n        </span>\n        <ul class='options'>\n          <li>\n            <a href='#!/";
   if (helper = helpers.parentId) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.parentId); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)

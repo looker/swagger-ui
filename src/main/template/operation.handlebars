@@ -16,11 +16,14 @@
             <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation" {{#if deprecated}}deprecated{{/if}}>{{{ruby_signature}}}</a>
           </span>
         </h3>
-        <span class='status'>
+        <span class='status tooltip_anchor'>
           <a href='#!/{{parentId}}/{{nickname}}'
              class="toggleOperation status_{{looker_status}}">
             {{{looker_status_text}}}
           </a>
+          <span class='tooltip_popup'>
+            {{looker_status_description}}
+          </span>
         </span>
         <ul class='options'>
           <li>

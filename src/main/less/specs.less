@@ -372,6 +372,41 @@
         vertical-align: middle;
     }
 
+    .tooltip_anchor {
+    }
+
+    .tooltip_anchor:hover .tooltip_popup {
+        visibility: visible;
+        position: absolute;
+    }
+
+    .tooltip_anchor .tooltip_popup {
+        visibility: hidden;
+        margin-top: 10px;
+        margin-left: -100px;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
+
+    .tooltip_anchor .tooltip_popup:after {
+        content: " ";
+        position: absolute;
+        bottom: 100%;  /* At the top of the tooltip */
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent black transparent;
+    }
+
     .code {
         font-family: "Anonymous Pro", "Menlo", "Consolas", "Bitstream Vera Sans Mono", "Courier New", monospace;
     }
@@ -639,7 +674,6 @@
                                     padding: 0;
                                     a {
                                         color: white;
-                                        background-color: #0f6ab4;
                                         text-decoration: none;
                                         text-align: center;
                                         font-size: 0.5em;
@@ -652,6 +686,14 @@
                                         -ms-border-radius: 15px;
                                         -khtml-border-radius: 15px;
                                         border-radius: 15px;
+                                    }
+                                    .tooltip_popup {
+                                        font-size: 0.7em;
+                                        padding: 10px;
+                                        margin-left: -120px;
+                                    }
+                                    .tooltip_popup::after {
+                                        left: 90%;
                                     }
                                 }
                                 ul.options {
@@ -745,6 +787,11 @@
                                         }
                                     }
                                 }
+                                span.status {
+                                    a {
+                                        background-color: #c5862b;
+                                    }
+                                }
                                 ul.options {
                                     li {
                                         border-right: 1px solid #dddddd;
@@ -783,6 +830,11 @@
                                         }
                                     }
                                 }
+                                span.status {
+                                    a {
+                                        background-color: #ffd20f;
+                                    }
+                                }
                                 ul.options {
                                     li {
                                         border-right: 1px solid #dddddd;
@@ -817,8 +869,12 @@
                                         a {
                                             text-transform: uppercase;
                                             background-color: #a41e22;
-
                                         }
+                                    }
+                                }
+                                span.status {
+                                    a {
+                                        background-color: #a41e22;
                                     }
                                 }
                                 ul.options {
@@ -856,6 +912,11 @@
                                         }
                                     }
                                 }
+                                span.status {
+                                    a {
+                                        background-color: #10a54a;
+                                    }
+                                }
                                 ul.options {
                                     li {
                                         border-right: 1px solid #dddddd;
@@ -888,8 +949,12 @@
                                     span.http_method, span.sdk {
                                         a {
                                             background-color: #D38042;
-
                                         }
+                                    }
+                                }
+                                span.status {
+                                    a {
+                                        background-color: #D38042;
                                     }
                                 }
                                 ul.options {
@@ -929,6 +994,11 @@
                                         }
                                     }
                                 }
+                                span.status {
+                                    a {
+                                        background-color: #0f6ab4;
+                                    }
+                                }
                                 ul.options {
                                     li {
                                         border-right: 1px solid #dddddd;
@@ -962,6 +1032,11 @@
                                         a {
                                             background-color: #0f6ab4;
                                         }
+                                    }
+                                }
+                                span.status {
+                                    a {
+                                        background-color: #0f6ab4;
                                     }
                                 }
                                 ul.options {
