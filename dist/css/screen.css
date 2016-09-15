@@ -741,7 +741,7 @@
   clear: none;
   float: right;
   width: auto;
-  margin: 0;
+  margin-right: 10px;
   padding: 0;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading span.status a {
