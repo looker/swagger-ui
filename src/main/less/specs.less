@@ -680,6 +680,7 @@
                                         display: inline-block;
                                         padding: 5px;
                                         margin-top: 8px;
+                                        width: 6px;
                                         -moz-border-radius: 15px;
                                         -webkit-border-radius: 15px;
                                         -o-border-radius: 15px;
@@ -694,6 +695,16 @@
                                     }
                                     .tooltip_popup::after {
                                         left: 90%;
+                                    }
+                                }
+                                span.status_stable {
+                                    display: none;
+                                }
+                                span.status_deprecated {
+                                    a {
+                                        background-color: lightpink !important;
+                                        font-weight: 700;
+                                        color: deeppink;
                                     }
                                 }
                                 ul.options {

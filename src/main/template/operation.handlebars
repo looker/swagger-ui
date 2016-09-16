@@ -16,9 +16,9 @@
             <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation" {{#if deprecated}}deprecated{{/if}}>{{{ruby_signature}}}</a>
           </span>
         </h3>
-        <span class='status tooltip_anchor'>
+        <span class='status status_{{looker_status}} tooltip_anchor'>
           <a href='#!/{{parentId}}/{{nickname}}'
-             class="toggleOperation status_{{looker_status}}">
+             class="toggleOperation">
             {{{looker_status_text}}}
           </a>
           <span class='tooltip_popup'>
