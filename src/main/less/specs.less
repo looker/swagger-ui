@@ -347,6 +347,7 @@
         font-size: 1.3em;
         padding: 10px 0 10px 0;
         cursor: pointer;
+        position: relative;
         a {
             color: black;
         }
@@ -358,13 +359,17 @@
                 color: #777777;
             }
         }
-        span.glyphicon {
-            font-size: 60%;
-            text-align: right;
-            margin-left: -35px;
-            width: 30px;
-            vertical-align: 30%;
-        }
+    }
+    h2::before {
+        content:"\e252"; // glyphicon-triangle-right
+        position: absolute;
+        right: 101%;
+        font-family: 'Glyphicons Halflings';
+        font-size: 50%;
+        top: 35%;
+    }
+    h2.collapsed::before {
+        content:"\e250"; // glyphicon-triangle-down
     }
     .collapsing {
         clear: both;

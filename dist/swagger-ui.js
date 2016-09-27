@@ -268,7 +268,7 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n  <div class=\"info_title\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.info)),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n  <h2 data-toggle=\"collapse\" data-target=\"#info_description\">\n    <span type=\"button\" class=\"glyphicon glyphicon-triangle-right\" aria-hidden=\"true\" ></span>\n    Overview\n  </h2>\n  <div class=\"info_description collapse in\" id=\"info_description\">";
+    + "</div>\n  <h2 data-toggle=\"collapse\" data-target=\"#info_description\" aria-expanded=\"true\">\n    Overview\n  </h2>\n  <div class=\"info_description collapse in\" id=\"info_description\">";
   stack1 = ((stack1 = ((stack1 = (depth0 && depth0.info)),stack1 == null || stack1 === false ? stack1 : stack1.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  ";
@@ -1201,7 +1201,7 @@ function program3(depth0,data) {
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "_endpoint_list'>\n    <span class=\"glyphicon glyphicon-triangle-right\" />\n    <a href='#!/";
+    + "_endpoint_list'  aria-expanded=\"false\" class=\"collapsed\">\n    <a href='#!/";
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
