@@ -116,35 +116,35 @@ var Docs = {
 	},
 
 	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
-		if (elem.is(':visible')) {
-			Docs.collapseEndpointListForResource(resource);
-		} else {
-			Docs.expandEndpointListForResource(resource);
-		}
+		// var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		// if (elem.is(':visible')) {
+		// 	Docs.collapseEndpointListForResource(resource);
+		// } else {
+		// 	Docs.expandEndpointListForResource(resource);
+		// }
 	},
 
 	// Expand resource
 	expandEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
-			return;
-		}
-
-		$('li#resource_' + resource).addClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideDown();
+		// var resource = Docs.escapeResourceName(resource);
+		// if (resource == '') {
+		// 	$('.resource ul.endpoints').slideDown();
+		// 	return;
+		// }
+    //
+		// $('li#resource_' + resource).addClass('active');
+    //
+		// var elem = $('li#resource_' + resource + ' ul.endpoints');
+		// elem.slideDown();
 	},
 
 	// Collapse resource and mark as explicitly closed
 	collapseEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		$('li#resource_' + resource).removeClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideUp();
+		// var resource = Docs.escapeResourceName(resource);
+		// $('li#resource_' + resource).removeClass('active');
+    //
+		// var elem = $('li#resource_' + resource + ' ul.endpoints');
+		// elem.slideUp();
 	},
 
 	expandOperationsForResource: function(resource) {

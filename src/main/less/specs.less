@@ -340,11 +340,13 @@
             margin-top: 10px;
         }
     }
-
     h2 {
+        font-family: "Droid Sans", sans-serif;
+        font-weight: bold;
         color: black;
         font-size: 1.3em;
         padding: 10px 0 10px 0;
+        cursor: pointer;
         a {
             color: black;
         }
@@ -356,6 +358,16 @@
                 color: #777777;
             }
         }
+        span.glyphicon {
+            font-size: 60%;
+            text-align: right;
+            margin-left: -35px;
+            width: 30px;
+            vertical-align: 30%;
+        }
+    }
+    .collapsing {
+        clear: both;
     }
 
     span.weak {
@@ -530,10 +542,10 @@
             }
 
             div.heading {
-                border: 1px solid transparent;
+                //border: 1px solid transparent;
                 float: none;
                 clear: both;
-                overflow: hidden;
+//                overflow: hidden;
                 display: block;
                 ul.options {
                     overflow: hidden;
@@ -585,13 +597,12 @@
                     display: block;
                     clear: none;
                     float: left;
-                    font-family: "Droid Sans", sans-serif;
-                    font-weight: bold;
                     a {
                         color: #999999;
                     }
                     a:hover {
                         color: black;
+                        text-decoration: none;
                     }
                 }
             }

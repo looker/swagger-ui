@@ -118,35 +118,35 @@ var Docs = {
 	},
 
 	toggleEndpointListForResource: function(resource) {
-		var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
-		if (elem.is(':visible')) {
-			Docs.collapseEndpointListForResource(resource);
-		} else {
-			Docs.expandEndpointListForResource(resource);
-		}
+		// var elem = $('li#resource_' + Docs.escapeResourceName(resource) + ' ul.endpoints');
+		// if (elem.is(':visible')) {
+		// 	Docs.collapseEndpointListForResource(resource);
+		// } else {
+		// 	Docs.expandEndpointListForResource(resource);
+		// }
 	},
 
 	// Expand resource
 	expandEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		if (resource == '') {
-			$('.resource ul.endpoints').slideDown();
-			return;
-		}
-
-		$('li#resource_' + resource).addClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideDown();
+		// var resource = Docs.escapeResourceName(resource);
+		// if (resource == '') {
+		// 	$('.resource ul.endpoints').slideDown();
+		// 	return;
+		// }
+    //
+		// $('li#resource_' + resource).addClass('active');
+    //
+		// var elem = $('li#resource_' + resource + ' ul.endpoints');
+		// elem.slideDown();
 	},
 
 	// Collapse resource and mark as explicitly closed
 	collapseEndpointListForResource: function(resource) {
-		var resource = Docs.escapeResourceName(resource);
-		$('li#resource_' + resource).removeClass('active');
-
-		var elem = $('li#resource_' + resource + ' ul.endpoints');
-		elem.slideUp();
+		// var resource = Docs.escapeResourceName(resource);
+		// $('li#resource_' + resource).removeClass('active');
+    //
+		// var elem = $('li#resource_' + resource + ' ul.endpoints');
+		// elem.slideUp();
 	},
 
 	expandOperationsForResource: function(resource) {
@@ -183,7 +183,8 @@ var Docs = {
 	collapseOperation: function(elem) {
 		elem.slideUp();
 	}
-};(function() {
+};
+(function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['apikey_button_view'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
@@ -267,10 +268,10 @@ function program1(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n  <div class=\"info_title\">"
     + escapeExpression(((stack1 = ((stack1 = (depth0 && depth0.info)),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n  <div class=\"info_description\">";
+    + "</div>\n  <h2 data-toggle=\"collapse\" data-target=\"#info_description\">\n    <span type=\"button\" class=\"glyphicon glyphicon-triangle-right\" aria-hidden=\"true\" ></span>\n    Overview\n  </h2>\n  <div class=\"info_description collapse in\" id=\"info_description\">";
   stack1 = ((stack1 = ((stack1 = (depth0 && depth0.info)),stack1 == null || stack1 === false ? stack1 : stack1.description)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1);
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</div>\n  ";
+  buffer += "\n  ";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 && depth0.info)),stack1 == null || stack1 === false ? stack1 : stack1.termsOfServiceUrl), {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  ";
@@ -346,7 +347,7 @@ function program10(depth0,data) {
   buffer += "<div class='info' id='api_info'>\n  ";
   stack1 = helpers['if'].call(depth0, (depth0 && depth0.info), {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</div>\n<div class='container' id='resources_container'>\n  <ul id='resources'></ul>\n\n  <div class=\"footer\">\n    <br>\n    <br>\n    <h4 style=\"color: #999\">[ <span style=\"font-variant: small-caps\">base url</span>: ";
+  buffer += "\n  </div>\n</div>\n<div id='resources_container'>\n  <ul id='resources'></ul>\n\n  <div class=\"footer\">\n    <br>\n    <br>\n    <h4 style=\"color: #999\">[ <span style=\"font-variant: small-caps\">base url</span>: ";
   if (helper = helpers.basePath) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.basePath); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1196,11 +1197,15 @@ function program3(depth0,data) {
   return buffer;
   }
 
-  buffer += "<div class='heading'>\n  <h2>\n    <a href='#!/";
+  buffer += "<div class='heading'>\n  <h2 data-toggle=\"collapse\" data-target='#";
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "' class=\"toggleEndpointList\" data-id=\"";
+    + "_endpoint_list'>\n    <span class=\"glyphicon glyphicon-triangle-right\" />\n    <a href='#!/";
+  if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
+  else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
+  buffer += escapeExpression(stack1)
+    + "' data-id=\"";
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1217,7 +1222,7 @@ function program3(depth0,data) {
   if (helper = helpers.summary) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.summary); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</a>\n  </h2>\n  <ul class='options'>\n    <li>\n      <a href='#!/";
+  buffer += "</a>\n  </h2>\n<!--\n  <ul class='options'>\n    <li>\n      <a href='#!/";
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
@@ -1243,11 +1248,11 @@ function program3(depth0,data) {
   else { helper = (depth0 && depth0.url); stack1 = typeof helper === functionType ? helper.call(depth0, options) : helper; }
   if (!helpers.url) { stack1 = blockHelperMissing.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data}); }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n</div>\n<ul class='endpoints' id='";
+  buffer += "\n  </ul>\n-->\n</div>\n<ul class='endpoints collapse' id='";
   if (helper = helpers.id) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.id); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
-    + "_endpoint_list' style='display:none'>\n\n</ul>\n";
+    + "_endpoint_list'>\n\n</ul>\n";
   return buffer;
   });
 })();
