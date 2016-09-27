@@ -758,6 +758,7 @@
   width: auto;
   margin-right: 10px;
   padding: 0;
+  box-sizing: content-box;
 }
 .swagger-section .swagger-ui-wrap ul#resources li.resource ul.endpoints li.endpoint ul.operations li.operation div.heading span.status a {
   color: white;
@@ -767,7 +768,7 @@
   display: inline-block;
   padding: 5px;
   margin-top: 8px;
-  width: 6px;
+  width: 15px;
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   -o-border-radius: 15px;
