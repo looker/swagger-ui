@@ -1290,8 +1290,8 @@ Property.prototype.toString = function() {
     str = '<span class="propName ' + this.required + '">' + this.name + '</span> (<span class="propType">' + str + '</span>';
     if(this.obj && this.obj.readOnly)
       str += ', <span class="propReadOnlyKey">read-only</span>';
-    if(!this.required)
-      str += ', <span class="propOptKey">optional</span>';
+    // if(!this.required)
+    //   str += ', <span class="propOptKey">optional</span>';
     str += ')';
   }
   else
