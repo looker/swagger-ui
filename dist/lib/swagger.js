@@ -678,9 +678,9 @@
   SwaggerModelProperty.prototype.toString = function () {
     var req = this.required ? 'propReq' : 'propOpt';
     var str = '<span class="propName ' + req + '">' + this.name + '</span> (<span class="propType">' + this.dataTypeWithRef + '</span>';
-    // if (!this.required) {
-    //   str += ', <span class="propOptKey">optional</span>';
-    // }
+    if (this.required) {
+      str += ', <span class="propRequiredKey">required</span>';
+    }
     str += ')';
     if (this.values != null) {
       str += " = <span class='propVals'>['" + this.values.join("' or '") + "']</span>";
