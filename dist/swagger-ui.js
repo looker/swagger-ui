@@ -1377,7 +1377,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         return _this.showMessage(d);
       };
       this.options.failure = function(d) {
-        if (_this.api && _this.api.isValid === false) {
+        if (_this.api && _this.api.isValid === false && _this.options.legacyFallback === true) {
           log("not a valid 2.0 spec, loading legacy client");
           _this.api = new SwaggerApi(_this.options);
           return _this.api.build();
@@ -1418,7 +1418,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       this.options.url = url;
       this.headerView.update(url);
       this.api = new SwaggerClient(this.options);
-      return this.api.build();
+      if (this.options.success === false) {
+        return this.api.build();
+      }
     };
 
     SwaggerUi.prototype.collapseAll = function() {
@@ -2304,7 +2306,11 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         code = $('<code />').html(_.escape(content));
         pre = $('<pre class="xml" />').append(code);
       } else if (/^image\//.test(contentType)) {
-        pre = $('<img>').attr('src', URL.createObjectURL(content));
+        if (content instanceof Blob && (content.type.indexOf('image/') === 0)) {
+          pre = $('<img>').attr('src', URL.createObjectURL(content));
+        } else {
+          pre = $('<code />').text("Received " + content.length + " bytes of " + contentType + " data.");
+        }
       } else {
         code = $('<code />').text(content);
         pre = $('<pre class="json" />').append(code);

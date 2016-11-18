@@ -26,7 +26,7 @@ class SwaggerUi extends Backbone.Router
       @render()
     @options.progress = (d) => @showMessage(d)
     @options.failure = (d) =>
-      if @api and @api.isValid is false
+      if @api and @api.isValid is false and @options.legacyFallback is true
         log "not a valid 2.0 spec, loading legacy client"
         @api = new SwaggerApi(@options)
         @api.build()
@@ -64,7 +64,8 @@ class SwaggerUi extends Backbone.Router
     @headerView.update(url)
 
     @api = new SwaggerClient(@options)
-    @api.build()
+    if @options.success is false
+      @api.build()
 
   # collapse all sections
   collapseAll:() ->
