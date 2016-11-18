@@ -407,7 +407,10 @@ class OperationView extends Backbone.View
       code = $('<code />').html(_.escape(content))
       pre = $('<pre class="xml" />').append(code)
     else if /^image\//.test(contentType)
-      pre = $('<img>').attr('src',url)
+      if content instanceof Blob && (content.type.indexOf('image/') == 0)
+        pre = $('<img>').attr('src', URL.createObjectURL(content))
+      else
+        pre = $('<code />').text("Received #{content.length} bytes of #{contentType} data.")
     else
       # don't know what to render!
       code = $('<code />').text(content)
