@@ -407,7 +407,7 @@ class OperationView extends Backbone.View
       code = $('<code />').html(_.escape(content))
       pre = $('<pre class="xml" />').append(code)
     else if /^image\//.test(contentType)
-      pre = $('<img>').attr('src',url)
+      pre = $('<img>').attr('src', URL.createObjectURL(content))
     else
       # don't know what to render!
       code = $('<code />').text(content)

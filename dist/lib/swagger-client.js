@@ -954,7 +954,7 @@ Operation.prototype.execute = function(arg1, arg2, arg3, arg4, parent) {
     url: url,
     method: this.method,
     body: args.body,
-    useJQuery: this.useJQuery,
+    useJQuery: parent.options.swaggerOptions.useJQuery,
     headers: headers,
     on: {
       response: function(response) {
@@ -1287,7 +1287,7 @@ simpleRef = function(name) {
 Property.prototype.toString = function() {
   var str = getStringSignature(this.schema);
   if(str !== '') {
-    str = '<span class="propName ' + this.required + '">' + this.name + '</span> (<span class="propType">' + str + '</span>';
+    str = '<span class="propName ' + (this.required ? 'required' : '') + '">' + this.name + '</span> (<span class="propType">' + str + '</span>';
     if(this.obj && this.obj.readOnly)
       str += ', <span class="propReadOnlyKey">read-only</span>';
     if(this.required)
@@ -1383,12 +1383,21 @@ var JQueryHttpClient = function(options) {
   }
 }
 
+var isBinaryContentType = function(content_type) {
+  return content_type.toLowerCase().indexOf('image/') == 0;
+}
+
 JQueryHttpClient.prototype.execute = function(obj) {
   var cb = obj.on;
   var request = obj;
 
   obj.type = obj.method;
   obj.cache = false;
+
+  if (obj.headers && obj.headers['Accept'] && isBinaryContentType(obj.headers['Accept'])) {
+    obj.dataType = 'binary';
+    obj.processData = false;
+  }
 
   obj.beforeSend = function(xhr) {
     var key, results;
@@ -1432,7 +1441,7 @@ JQueryHttpClient.prototype.execute = function(obj) {
       url: request.url,
       method: request.method,
       status: response.status,
-      data: response.responseText,
+      data: response.response || response.responseText,
       headers: headers
     };
 

@@ -2304,7 +2304,7 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         code = $('<code />').html(_.escape(content));
         pre = $('<pre class="xml" />').append(code);
       } else if (/^image\//.test(contentType)) {
-        pre = $('<img>').attr('src', url);
+        pre = $('<img>').attr('src', URL.createObjectURL(content));
       } else {
         code = $('<code />').text(content);
         pre = $('<pre class="json" />').append(code);
