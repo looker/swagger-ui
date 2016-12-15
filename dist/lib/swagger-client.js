@@ -299,6 +299,7 @@ PrimitiveModel.prototype.getMockSignature = function(modelsToIgnore) {
   this.isValid = false;
   this.info = null;
   this.useJQuery = false;
+  this.useXHR = false;
   this.models = models;
 
   options = (options||{});
@@ -316,6 +317,9 @@ PrimitiveModel.prototype.getMockSignature = function(modelsToIgnore) {
   if (typeof options.useJQuery === 'boolean')
     this.useJQuery = options.useJQuery;
 
+  if (typeof options.useXHR === 'boolean')
+    this.useXHR = options.useXHR;
+
   this.failure = options.failure != null ? options.failure : function() {};
   this.progress = options.progress != null ? options.progress : function() {};
   this.spec = options.spec;
@@ -331,6 +335,7 @@ SwaggerClient.prototype.build = function() {
   this.progress('fetching resource list: ' + this.url);
   var obj = {
     useJQuery: this.useJQuery,
+    useXHR: this.useXHR,
     url: this.url,
     method: "get",
     headers: {
@@ -948,6 +953,7 @@ Operation.prototype.execute = function(arg1, arg2, arg3, arg4, parent) {
     method: this.method,
     body: args.body,
     useJQuery: parent.options.swaggerOptions.useJQuery,
+    useXHR: parent.options.swaggerOptions.useXHR,
     headers: headers,
     on: {
       response: function(response) {
@@ -1344,9 +1350,10 @@ SwaggerHttp.prototype.execute = function(obj) {
   else
     this.useJQuery = this.isIE8();
 
-  if(this.useJQuery)
+  if (obj && (typeof obj.useXHR === 'boolean') && obj.useXHR)
     return new XHRHttpClient().execute(obj);
-//    return new JQueryHttpClient().execute(obj);
+  else if(this.useJQuery)
+    return new JQueryHttpClient().execute(obj);
   else
     return new ShredHttpClient().execute(obj);
 }
