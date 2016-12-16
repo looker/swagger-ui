@@ -1932,6 +1932,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         type = param.type || param.dataType;
         if (typeof type === 'undefined') {
           schema = param.schema;
+          if (schema && schema['type'] === 'array') {
+            schema = schema['items'];
+          }
           if (schema && schema['$ref']) {
             ref = schema['$ref'];
             if (ref.indexOf('#/definitions/') === 0) {

@@ -53,7 +53,7 @@ ArrayModel.prototype.getMockSignature = function(modelsToIgnore) {
   var propertiesStr = [];
 
   if(this.ref) {
-    return models[simpleRef(this.ref)].getMockSignature();
+    return '<span>Array of </span>' + models[simpleRef(this.ref)].getMockSignature();
   }
 };
 
@@ -726,7 +726,7 @@ Operation.prototype.getType = function (param) {
   else if(type === 'integer' && format === 'int64')
     str = 'long';
   else if(type === 'integer')
-    str = 'integer'
+    str = 'integer';
   else if(type === 'string' && format === 'date-time')
     str = 'date-time';
   else if(type === 'string' && format === 'date')
@@ -746,21 +746,17 @@ Operation.prototype.getType = function (param) {
     if(param.items)
       str = this.getType(param.items);
   }
-  if(param['$ref'])
-    str = param['$ref'];
+
+  var ref = param['$ref'];
 
   var schema = param.schema;
   if(schema) {
-    var ref = schema['$ref'];
-    if(ref) {
-      ref = simpleRef(ref);
-      if(isArray)
-        return [ ref ];
-      else
-        return ref;
-    }
-    else
-      return this.getType(schema);
+    ref = schema['$ref'];
+    if (!ref)
+      str = this.getType(schema);
+  }
+  if(ref) {
+    str = simpleRef(ref);
   }
   if(isArray)
     return [ str ];
@@ -791,25 +787,20 @@ Operation.prototype.help = function() {
 }
 
 Operation.prototype.getSignature = function(type, models) {
-  var isPrimitive, listType;
+  var isPrimitive;
+  var prefix = "";
 
   if(type instanceof Array) {
-    listType = true;
     type = type[0];
+    prefix = '<span>Array of </span>';
   }
 
   if(type === 'string')
     isPrimitive = true
   else
-    isPrimitive = ((listType != null) && models[listType]) || (models[type] != null) ? false : true;
-  if (isPrimitive) {
-    return type;
-  } else {
-    if (listType != null)
-      return models[type].getMockSignature();
-    else
-      return models[type].getMockSignature();
-  }
+    isPrimitive = models[type] == null;
+
+  return prefix + (isPrimitive ? type : models[type].getMockSignature())
 };
 
 /**
