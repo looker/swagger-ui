@@ -1495,11 +1495,6 @@ JQueryHttpClient.prototype.execute = function(obj) {
   obj.type = obj.method;
   obj.cache = false;
 
-  if (obj.headers && obj.headers['Accept'] && isBinaryContentType(obj.headers['Accept'])) {
-    obj.dataType = 'binary';
-    obj.processData = false;
-  }
-
   obj.beforeSend = function(xhr) {
     var key, results;
     if (obj.headers) {
