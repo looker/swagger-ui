@@ -78,6 +78,10 @@
       setInterval(function(){window.updateLoginButton()}, 5000);
       $('#login').mouseenter(function(){window.updateLoginButton()});
 
+      window.onhashchange = function () {
+        Docs.shebang();
+      }
+
       window.swaggerUi.load();
   });
   </script>
