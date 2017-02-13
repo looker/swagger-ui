@@ -1444,7 +1444,7 @@ var XHRHttpClient = function (options) {
 XHRHttpClient.prototype.execute = function (obj) {
   var cb = obj.on;
   var url = obj.url;
-  var method = obj.method;
+  var method = obj.method.toUpperCase();
 
   var xhr = new XMLHttpRequest();
 
