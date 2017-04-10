@@ -176,14 +176,16 @@ class OperationView extends Backbone.View
       isFileUpload = false
 
       for o in form.find("input")
-        if(o.value? && jQuery.trim(o.value).length > 0)
-          map[o.name] = o.value
+        val = o.value
+        if(val? && jQuery.trim(val).length > 0)
+          map[o.name] = val
         if o.type is "file"
           isFileUpload = true
 
       for o in form.find("textarea")
-        if(o.value? && jQuery.trim(o.value).length > 0)
-          map[o.name] = o.value
+        val = this.getTextAreaValue o
+        if (val? && jQuery.trim(val).length > 0)
+          map[o.name] = val
 
       for o in form.find("select")
         val = this.getSelectedValue o
@@ -283,6 +285,28 @@ class OperationView extends Backbone.View
     o.request.url = @invocationUrl
     o.status = data.status
     o
+
+  getTextAreaValue: (textArea) ->
+    if (textArea.value == null || jQuery.trim(textArea.value).length == 0)
+      return null
+
+    param = this.getParamByName(textArea.name)
+    if (param && param.type && param.type.toLowerCase() == 'array')
+      parsed = textArea.value.split('\n')
+      result = []
+      for i in parsed
+        if (i? && jQuery.trim(i).length > 0)
+          result.push(i)
+      return if result.length > 0 then result else null
+    else
+      return textArea.value
+
+  getParamByName: (name) ->
+    if (this.model.parameters)
+      for i in this.model.parameters
+        if (i.name == name)
+          return i
+    return null
 
   getSelectedValue: (select) ->
     if !select.multiple
