@@ -6,7 +6,9 @@ class ParameterView extends Backbone.View
           opts.fn(@)
         else
           opts.inverse(@)
-          
+
+    initHandlebarsRegisterHelper()
+
   render: ->
     type = @model.type || @model.dataType
 

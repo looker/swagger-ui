@@ -601,7 +601,7 @@ function program24(depth0,data) {
 templates['param'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -669,37 +669,17 @@ function program9(depth0,data) {
   }
 function program10(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n			";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0['default']), {hash:{},inverse:self.program(13, program13, data),fn:self.program(11, program11, data),data:data});
+  var buffer = "", stack1, helper, options;
+  buffer += "\n      ";
+  stack1 = (helper = helpers.renderTextParam || (depth0 && depth0.renderTextParam),options={hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "renderTextParam", depth0, options));
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
+  buffer += "\n    ";
   return buffer;
   }
 function program11(depth0,data) {
   
-  var buffer = "", stack1, helper;
-  buffer += "\n				<input class='parameter' minlength='0' name='";
-  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "' placeholder='' type='text' value='";
-  if (helper = helpers['default']) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0['default']); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "'/>\n			";
-  return buffer;
-  }
-
-function program13(depth0,data) {
   
-  var buffer = "", stack1, helper;
-  buffer += "\n				<input class='parameter' minlength='0' name='";
-  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "' placeholder='' type='text' value=''/>\n			";
-  return buffer;
+  return "\n      ";
   }
 
   buffer += "<td class='code'>";
@@ -732,61 +712,85 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   
-  return " multiple='multiple'";
+  return "'code required'";
   }
 
 function program3(depth0,data) {
   
   
-  return "\n    ";
+  return "'code'";
   }
 
 function program5(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n      ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0['default']), {hash:{},inverse:self.program(8, program8, data),fn:self.program(6, program6, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    ";
-  return buffer;
-  }
-function program6(depth0,data) {
   
-  
-  return "\n      ";
+  return " multiple='multiple'";
   }
 
-function program8(depth0,data) {
+function program7(depth0,data) {
   
-  var buffer = "", stack1, helper, options;
-  buffer += "\n        ";
-  stack1 = (helper = helpers.isArray || (depth0 && depth0.isArray),options={hash:{},inverse:self.program(11, program11, data),fn:self.program(9, program9, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "isArray", depth0, options));
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n      ";
-  return buffer;
+  
+  return "'parameter required'";
   }
+
 function program9(depth0,data) {
   
   
-  return "\n        ";
+  return "'parameter'";
   }
 
 function program11(depth0,data) {
   
   
-  return "\n          <option selected=\"\" value=''></option>\n        ";
+  return "\n    ";
   }
 
 function program13(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDefault), {hash:{},inverse:self.program(16, program16, data),fn:self.program(14, program14, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0['default']), {hash:{},inverse:self.program(16, program16, data),fn:self.program(14, program14, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
   return buffer;
   }
 function program14(depth0,data) {
+  
+  
+  return "\n      ";
+  }
+
+function program16(depth0,data) {
+  
+  var buffer = "", stack1, helper, options;
+  buffer += "\n        ";
+  stack1 = (helper = helpers.isArray || (depth0 && depth0.isArray),options={hash:{},inverse:self.program(19, program19, data),fn:self.program(17, program17, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "isArray", depth0, options));
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      ";
+  return buffer;
+  }
+function program17(depth0,data) {
+  
+  
+  return "\n        ";
+  }
+
+function program19(depth0,data) {
+  
+  
+  return "\n          <option selected=\"\" value=''></option>\n        ";
+  }
+
+function program21(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      ";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.isDefault), {hash:{},inverse:self.program(24, program24, data),fn:self.program(22, program22, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  return buffer;
+  }
+function program22(depth0,data) {
   
   var buffer = "", stack1, helper;
   buffer += "\n        <option selected=\"\" value='";
@@ -801,7 +805,7 @@ function program14(depth0,data) {
   return buffer;
   }
 
-function program16(depth0,data) {
+function program24(depth0,data) {
   
   var buffer = "", stack1, helper;
   buffer += "\n        <option value='";
@@ -816,22 +820,28 @@ function program16(depth0,data) {
   return buffer;
   }
 
-  buffer += "<td class='code'>";
+  buffer += "<td class=";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.required), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ">";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
     + "</td>\n<td>\n  <select ";
-  stack1 = (helper = helpers.isArray || (depth0 && depth0.isArray),options={hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "isArray", depth0, options));
+  stack1 = (helper = helpers.isArray || (depth0 && depth0.isArray),options={hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "isArray", depth0, options));
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " class='parameter' name='";
+  buffer += " class=";
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.required), {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += " name='";
   if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   buffer += escapeExpression(stack1)
     + "'>\n    ";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0.required), {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
+  stack1 = helpers['if'].call(depth0, (depth0 && depth0.required), {hash:{},inverse:self.program(13, program13, data),fn:self.program(11, program11, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
-  stack1 = helpers.each.call(depth0, ((stack1 = (depth0 && depth0.allowableValues)),stack1 == null || stack1 === false ? stack1 : stack1.descriptiveValues), {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
+  stack1 = helpers.each.call(depth0, ((stack1 = (depth0 && depth0.allowableValues)),stack1 == null || stack1 === false ? stack1 : stack1.descriptiveValues), {hash:{},inverse:self.noop,fn:self.program(21, program21, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </select>\n</td>\n<td>";
   if (helper = helpers.description) { stack1 = helper.call(depth0, {hash:{},data:data}); }
@@ -841,7 +851,7 @@ function program16(depth0,data) {
   if (helper = helpers.paramType) { stack1 = helper.call(depth0, {hash:{},data:data}); }
   else { helper = (depth0 && depth0.paramType); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "</td>\n<td><span class=\"model-signature\"></span></td>";
+  buffer += "</td>\n<td><span class=\"model-signature\"></span></td>\n";
   return buffer;
   });
 })();
@@ -987,7 +997,7 @@ function program6(depth0,data) {
 templates['param_required'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
-  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, helper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -1066,37 +1076,17 @@ function program10(depth0,data) {
 
 function program12(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n			";
-  stack1 = helpers['if'].call(depth0, (depth0 && depth0['default']), {hash:{},inverse:self.program(15, program15, data),fn:self.program(13, program13, data),data:data});
+  var buffer = "", stack1, helper, options;
+  buffer += "\n      ";
+  stack1 = (helper = helpers.renderTextParam || (depth0 && depth0.renderTextParam),options={hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data},helper ? helper.call(depth0, depth0, options) : helperMissing.call(depth0, "renderTextParam", depth0, options));
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n		";
+  buffer += "\n    ";
   return buffer;
   }
 function program13(depth0,data) {
   
-  var buffer = "", stack1, helper;
-  buffer += "\n				<input class='parameter required' minlength='1' name='";
-  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "' placeholder='(required)' type='text' value='";
-  if (helper = helpers['default']) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0['default']); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "'/>\n			";
-  return buffer;
-  }
-
-function program15(depth0,data) {
   
-  var buffer = "", stack1, helper;
-  buffer += "\n				<input class='parameter required' minlength='1' name='";
-  if (helper = helpers.name) { stack1 = helper.call(depth0, {hash:{},data:data}); }
-  else { helper = (depth0 && depth0.name); stack1 = typeof helper === functionType ? helper.call(depth0, {hash:{},data:data}) : helper; }
-  buffer += escapeExpression(stack1)
-    + "' placeholder='(required)' type='text' value=''/>\n			";
-  return buffer;
+  return "\n      ";
   }
 
   buffer += "<td class='code required'>";
@@ -2030,8 +2020,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         _ref5 = form.find("input");
         for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
           o = _ref5[_i];
-          if ((o.value != null) && jQuery.trim(o.value).length > 0) {
-            map[o.name] = o.value;
+          val = o.value;
+          if ((val != null) && jQuery.trim(val).length > 0) {
+            map[o.name] = val;
           }
           if (o.type === "file") {
             isFileUpload = true;
@@ -2040,8 +2031,9 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
         _ref6 = form.find("textarea");
         for (_j = 0, _len1 = _ref6.length; _j < _len1; _j++) {
           o = _ref6[_j];
-          if ((o.value != null) && jQuery.trim(o.value).length > 0) {
-            map[o.name] = o.value;
+          val = this.getTextAreaValue(o);
+          if ((val != null) && jQuery.trim(val).length > 0) {
+            map[o.name] = val;
           }
         }
         _ref7 = form.find("select");
@@ -2154,6 +2146,45 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
       o.request.url = this.invocationUrl;
       o.status = data.status;
       return o;
+    };
+
+    OperationView.prototype.getTextAreaValue = function(textArea) {
+      var i, param, parsed, result, _i, _len;
+      if (textArea.value === null || jQuery.trim(textArea.value).length === 0) {
+        return null;
+      }
+      param = this.getParamByName(textArea.name);
+      if (param && param.type && param.type.toLowerCase() === 'array') {
+        parsed = textArea.value.split('\n');
+        result = [];
+        for (_i = 0, _len = parsed.length; _i < _len; _i++) {
+          i = parsed[_i];
+          if ((i != null) && jQuery.trim(i).length > 0) {
+            result.push(i);
+          }
+        }
+        if (result.length > 0) {
+          return result;
+        } else {
+          return null;
+        }
+      } else {
+        return textArea.value;
+      }
+    };
+
+    OperationView.prototype.getParamByName = function(name) {
+      var i, _i, _len, _ref5;
+      if (this.model.parameters) {
+        _ref5 = this.model.parameters;
+        for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
+          i = _ref5[_i];
+          if (i.name === name) {
+            return i;
+          }
+        }
+      }
+      return null;
     };
 
     OperationView.prototype.getSelectedValue = function(select) {
@@ -2398,13 +2429,14 @@ helpers = this.merge(helpers, Handlebars.helpers); data = data || {};
     }
 
     ParameterView.prototype.initialize = function() {
-      return Handlebars.registerHelper('isArray', function(param, opts) {
+      Handlebars.registerHelper('isArray', function(param, opts) {
         if (param.type.toLowerCase() === 'array' || param.allowMultiple) {
           return opts.fn(this);
         } else {
           return opts.inverse(this);
         }
       });
+      return initHandlebarsRegisterHelper();
     };
 
     ParameterView.prototype.render = function() {
