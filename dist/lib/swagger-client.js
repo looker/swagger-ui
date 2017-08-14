@@ -1287,7 +1287,7 @@ Property.prototype.toString = function() {
   var str = getStringSignature(this.schema);
   if(str !== '') {
     str = '<span class="propName ' + (this.required ? 'required' : '') + '">' + this.name + '</span> (<span class="propType">' + str + '</span>';
-    if(this.obj && this.obj.readOnly)
+    if(this.schema && this.schema.readOnly)
       str += ', <span class="propReadOnlyKey">read-only</span>';
     if(this.required)
       str += ', <span class="propRequredKey">required</span>';
