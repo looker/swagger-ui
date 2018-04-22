@@ -28,6 +28,269 @@
 
   <!-- enabling this will enable oauth2 implicit scope support -->
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
+
+  <script type="text/javascript">
+    const DEFAULT_API_VERSION_URL = "/versions";
+    const DEFAULT_SWAGGER_URL = "/api/3.0/swagger.json";
+
+    function loadSwaggerUI(api_versioned_swagger_url) {
+      return new Promise(function (resolve, reject) {
+        window.swaggerUi = new SwaggerUi({
+          url: api_versioned_swagger_url,
+          dom_id: "swagger-ui-container",
+          supportedSubmitMethods: ['get', 'post', 'put', 'patch', 'delete'],
+          onComplete: function(swaggerApi, swaggerUi){
+            log("Loaded SwaggerUI");
+            $('pre code').each(function(i, e) {
+              hljs.highlightBlock(e)
+            });
+            resolve(window.swaggerUi);
+          },
+          onFailure: function(data) {
+            log("Unable to Load SwaggerUI");
+            reject(
+              "<p>Looks like you need to log in! Don't have a client ID and secret? Go to Admin > User, " +
+              "click the edit button next to your user, and generate an API 3 key.</p>" +
+              "<p id='error-message'>Error returned by server: <b>" + data + "</b></p>"
+            );
+          },
+          docExpansion: "none",
+          sorter : "alpha",
+          useJQuery : false,
+          useXHR : true,
+          legacyFallback : false,
+        });
+
+        window.swaggerUi.load();
+
+        return window.swaggerUi;
+      });
+    }
+
+    $(function () {
+      marked.setOptions({
+        renderer: new marked.Renderer(),
+        tables: true,
+        breaks: true,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false
+      });
+
+      setInterval(function(){window.updateLoginButton()}, 5000);
+      $('#login').mouseenter(function(){window.updateLoginButton()});
+
+      window.onhashchange = function () {
+        Docs.shebang();
+      }
+
+      new Promise(function (resolve, reject) {
+        return fetch(DEFAULT_API_VERSION_URL)
+          .then(function (response) {
+            if (response.status == '404')
+              reject(response.statusText);
+            else
+              resolve(response.json());
+          })
+      })
+      // We'll end up here if the fetch() fails or if the browser doesn't support fetch()
+        .catch(function () {
+          return {
+            'supported_versions': [
+              {
+                "version": "3.0",
+                "full_version": "3.0.0",
+                "status": "current",
+                "swagger_url": DEFAULT_SWAGGER_URL,
+              }
+            ],
+          }
+        })
+        .then(function(versionJson) {
+          let select_api_version = $('#select_api_version')[0];
+
+          select_api_version.options.length = 0;
+          for (let v of versionJson.supported_versions) {
+            if (v.status.startsWith('internal_'))
+              continue;
+
+            let selected = v.status === 'current';
+            select_api_version.add(new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected))
+          }
+          return select_api_version.selectedOptions[0].value;
+        }).then(function (selected_api_swagger_url) {
+        return loadSwaggerUI(selected_api_swagger_url);
+      }).catch(function (errorMsg) {
+        window.swaggerUi.showMessage(errorMsg);
+      })
+    });
+
+    function changeApiVersion() {
+      let select_api_version = $('#select_api_version')[0];
+      url = select_api_version.selectedOptions[0].value;
+      window.swaggerUi.updateSwaggerUi({url: url});
+    }
+  </script>
+
+  <script type="text/javascript">
+    var access_token = null;
+    var access_token_expires = null;
+
+    function initHandlebarsRegisterHelper()
+    {
+      Handlebars.registerHelper('renderTextParam', function(param) {
+        var result;
+        var isArray = param.type.toLowerCase() === 'array' || param.allowMultiple;
+        var defaultValue = isArray && Array.isArray(param.default) ? param.default.join('\n') : param.default;
+
+        if (typeof defaultValue === 'undefined') {
+          defaultValue = '';
+        }
+
+        if(isArray) {
+          result = '<textarea class=\'body-textarea' + (param.required ? ' required' : '') + '\' name=\'' + param.name + '\'';
+          result += ' placeholder=\'Provide multiple values in new lines' + (param.required ? ' (at least one required).' : '.') + '\'>';
+          result += defaultValue + '</textarea>';
+        } else {
+          result = '<input class=\'parameter\'' + (param.required ? ' class=\'required\'' : '') + ' minlength=\'' + (param.required ? 1 : 0) + '\'';
+          result += ' name=\'' + param.name +'\' placeholder=\'' + (param.required ? '(required)' : '') + '\'';
+          result += ' type=\'text\' value=\'' + defaultValue + '\'/>';
+        }
+        return new Handlebars.SafeString(result);
+      });
+    }
+
+    function updateLoginButton()
+    {
+      if (isLoggedIn()) {
+        $('#login').prop('value', 'Log Out');
+        $('#client_id, #client_secret').css('visibility', 'hidden');
+      } else {
+        $('#login').prop('value', 'Log In');
+        $('#client_id, #client_secret').css('visibility', 'visible');
+      }
+    }
+
+    function setAuth(token, expires)
+    {
+      access_token = token
+      access_token_expires = expires
+      window.authorizations.add("token", new ApiKeyAuthorization("Authorization", "token "+token, "header"));
+      updateLoginButton()
+    }
+
+    function clearAuth()
+    {
+      access_token = null
+      access_token_expires = null
+      window.authorizations.remove("token")
+      updateLoginButton()
+    }
+
+    function isLoggedIn()
+    {
+      return !!access_token && !!access_token_expires && (access_token_expires.getTime() > new Date().getTime())
+    }
+
+    function authHeader(access_token)
+    {
+      return {Authorization: "token "+access_token}
+    }
+
+    function logout()
+    {
+      if(isLoggedIn())
+      {
+        $.ajax({
+          url: '/logout',
+          type: 'DELETE',
+          headers: authHeader(access_token),
+          success: function(data) {
+            console.log("logout succeeded")
+          },
+          error: function(err) {
+            console.log("logout FAILED")
+            console.log({status: err.status, responseText: err.responseText})
+          }
+        })
+      }
+      clearAuth()
+    }
+
+    function login(client_id, client_secret)
+    {
+      if(isLoggedIn())
+        return;
+
+      clearAuth();
+
+      $.ajax({
+        url: '/login',
+        type: 'POST',
+        data: {client_id: client_id, client_secret: client_secret},
+        success: function(data) {
+          var access_token = data.access_token
+          var access_token_expires = new Date(new Date().getTime() + (data.expires_in * 1000));
+
+          // console.log({access_token: access_token, access_token_expires: access_token_expires})
+          setAuth(access_token, access_token_expires)
+
+          console.log("login succeeded")
+
+          loadSwagger();
+        },
+        error: function(err) {
+          console.log("login FAILED")
+          console.log({status: err.status, responseText: err.responseText})
+          alert("Login failed...\n"+err.status+"\n"+err.responseText);
+        }
+      })
+    }
+
+    function loginOrOut()
+    {
+      if(isLoggedIn())
+        logout()
+      else
+      {
+        client_id = $('#client_id').val()
+        client_secret = $('#client_secret').val()
+        var reason = "";
+        reason += client_id ? '' : 'Client ID is required\n'
+        reason += client_secret ? '' : 'Client Secret is required\n'
+        if (reason != "")
+          alert(reason);
+        else
+          login(client_id, client_secret)
+      }
+      return false;
+    }
+
+    function changeLanguage(language)
+    {
+      if (language == 'http') {
+        $(".sdk_header_element").hide();
+        $(".http_header_element").show();
+      } else {
+        $(".http_header_element").hide();
+        $(".sdk_header_element").show();
+      }
+
+      $('#change_language_http').toggleClass('selected', language == 'http')
+      $('#change_language_sdk').toggleClass('selected', language == 'sdk')
+
+      return false;
+    }
+
+    function loadSwagger()
+    {
+      window.swaggerUi.headerView.trigger('update-swagger-ui', {url: DEFAULT_SWAGGER_URL})
+      changeLanguage('sdk');
+      return false;
+    }
+
+  </script>
 </head>
 
 <body class="swagger-section">
@@ -63,271 +326,4 @@
     <div id='swagger-ui-container'></div>
   </div>
 </body>
-<script type="text/javascript">
-  const DEFAULT_API_VERSION_URL = "/versions";
-  const DEFAULT_SWAGGER_URL = "/api/3.0/swagger.json";
-
-  function loadSwaggerUI(api_versioned_swagger_url) {
-    return new Promise(function (resolve, reject) {
-      window.swaggerUi = new SwaggerUi({
-        url: api_versioned_swagger_url,
-        dom_id: "swagger-ui-container",
-        supportedSubmitMethods: ['get', 'post', 'put', 'patch', 'delete'],
-        onComplete: function(swaggerApi, swaggerUi){
-          log("Loaded SwaggerUI");
-          $('pre code').each(function(i, e) {
-            hljs.highlightBlock(e)
-          });
-          resolve(window.swaggerUi);
-        },
-        onFailure: function(data) {
-          log("Unable to Load SwaggerUI");
-          reject(
-            "<p>Looks like you need to log in! Don't have a client ID and secret? Go to Admin > User, " +
-            "click the edit button next to your user, and generate an API 3 key.</p>" +
-            "<p id='error-message'>Error returned by server: <b>" + data + "</b></p>"
-          );
-        },
-        docExpansion: "none",
-        sorter : "alpha",
-        useJQuery : false,
-        useXHR : true,
-        legacyFallback : false,
-      });
-
-      window.swaggerUi.load();
-
-      return window.swaggerUi;
-    });
-  }
-
-  $(function () {
-    marked.setOptions({
-      renderer: new marked.Renderer(),
-      tables: true,
-      breaks: true,
-      pedantic: false,
-      sanitize: false,
-      smartLists: true,
-      smartypants: false
-    });
-
-    setInterval(function(){window.updateLoginButton()}, 5000);
-    $('#login').mouseenter(function(){window.updateLoginButton()});
-
-    window.onhashchange = function () {
-      Docs.shebang();
-    }
-
-    new Promise(function (resolve, reject) {
-      return fetch(DEFAULT_API_VERSION_URL)
-        .then(function (response) {
-          if (response.status == '404')
-            reject(response.statusText);
-          else
-            resolve(response.json());
-        })
-    })
-    // We'll end up here if the fetch() fails or if the browser doesn't support fetch()
-    .catch(function () {
-      return {
-        'supported_versions': [
-          {
-            "version": "3.0",
-            "full_version": "3.0.0",
-            "status": "current",
-            "swagger_url": DEFAULT_SWAGGER_URL,
-          }
-        ],
-      }
-    })
-    .then(function(versionJson) {
-      let select_api_version = $('#select_api_version')[0];
-
-      select_api_version.options.length = 0;
-      for (let v of versionJson.supported_versions) {
-        if (v.status.startsWith('internal_'))
-          continue;
-
-        let selected = v.status === 'current';
-        select_api_version.add(new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected))
-      }
-      return select_api_version.selectedOptions[0].value;
-    }).then(function (selected_api_swagger_url) {
-      return loadSwaggerUI(selected_api_swagger_url);
-    }).catch(function (errorMsg) {
-      window.swaggerUi.showMessage(errorMsg);
-    })
-  });
-
-  function changeApiVersion() {
-    let select_api_version = $('#select_api_version')[0];
-    url = select_api_version.selectedOptions[0].value;
-    window.swaggerUi.updateSwaggerUi({url: url});
-//    loadSwaggerUI(select_api_version.selectedOptions[0].value)
-//      .catch(function (errorMsg) {
-//        window.swaggerUi.showMessage(errorMsg);
-//      });
-  }
-</script>
-
-<script type="text/javascript">
-  var access_token = null;
-  var access_token_expires = null;
-
-  function initHandlebarsRegisterHelper()
-  {
-    Handlebars.registerHelper('renderTextParam', function(param) {
-      var result;
-      var isArray = param.type.toLowerCase() === 'array' || param.allowMultiple;
-      var defaultValue = isArray && Array.isArray(param.default) ? param.default.join('\n') : param.default;
-
-      if (typeof defaultValue === 'undefined') {
-        defaultValue = '';
-      }
-
-      if(isArray) {
-        result = '<textarea class=\'body-textarea' + (param.required ? ' required' : '') + '\' name=\'' + param.name + '\'';
-        result += ' placeholder=\'Provide multiple values in new lines' + (param.required ? ' (at least one required).' : '.') + '\'>';
-        result += defaultValue + '</textarea>';
-      } else {
-        result = '<input class=\'parameter\'' + (param.required ? ' class=\'required\'' : '') + ' minlength=\'' + (param.required ? 1 : 0) + '\'';
-        result += ' name=\'' + param.name +'\' placeholder=\'' + (param.required ? '(required)' : '') + '\'';
-        result += ' type=\'text\' value=\'' + defaultValue + '\'/>';
-      }
-      return new Handlebars.SafeString(result);
-    });
-  }
-
-  function updateLoginButton()
-  {
-    if (isLoggedIn()) {
-      $('#login').prop('value', 'Log Out');
-      $('#client_id, #client_secret').css('visibility', 'hidden');
-    } else {
-      $('#login').prop('value', 'Log In');
-      $('#client_id, #client_secret').css('visibility', 'visible');
-    }
-  }
-
-  function setAuth(token, expires)
-  {
-    access_token = token
-    access_token_expires = expires
-    window.authorizations.add("token", new ApiKeyAuthorization("Authorization", "token "+token, "header"));
-    updateLoginButton()
-  }
-
-  function clearAuth()
-  {
-    access_token = null
-    access_token_expires = null
-    window.authorizations.remove("token")
-    updateLoginButton()
-  }
-
-  function isLoggedIn()
-  {
-    return !!access_token && !!access_token_expires && (access_token_expires.getTime() > new Date().getTime())
-  }
-
-  function authHeader(access_token)
-  {
-    return {Authorization: "token "+access_token}
-  }
-
-  function logout()
-  {
-    if(isLoggedIn())
-    {
-      $.ajax({
-        url: '/logout',
-        type: 'DELETE',
-        headers: authHeader(access_token),
-        success: function(data) {
-          console.log("logout succeeded")
-        },
-        error: function(err) {
-          console.log("logout FAILED")
-          console.log({status: err.status, responseText: err.responseText})
-        }
-      })
-    }
-    clearAuth()
-  }
-
-  function login(client_id, client_secret)
-  {
-    if(isLoggedIn())
-      return;
-
-    clearAuth();
-
-    $.ajax({
-      url: '/login',
-      type: 'POST',
-      data: {client_id: client_id, client_secret: client_secret},
-      success: function(data) {
-        var access_token = data.access_token
-        var access_token_expires = new Date(new Date().getTime() + (data.expires_in * 1000));
-
-        // console.log({access_token: access_token, access_token_expires: access_token_expires})
-        setAuth(access_token, access_token_expires)
-
-        console.log("login succeeded")
-
-        loadSwagger();
-      },
-      error: function(err) {
-        console.log("login FAILED")
-        console.log({status: err.status, responseText: err.responseText})
-        alert("Login failed...\n"+err.status+"\n"+err.responseText);
-      }
-    })
-  }
-
-  function loginOrOut()
-  {
-    if(isLoggedIn())
-      logout()
-    else
-    {
-      client_id = $('#client_id').val()
-      client_secret = $('#client_secret').val()
-      var reason = "";
-      reason += client_id ? '' : 'Client ID is required\n'
-      reason += client_secret ? '' : 'Client Secret is required\n'
-      if (reason != "")
-        alert(reason);
-      else
-        login(client_id, client_secret)
-    }
-    return false;
-  }
-
-  function changeLanguage(language)
-  {
-    if (language == 'http') {
-      $(".sdk_header_element").hide();
-      $(".http_header_element").show();
-    } else {
-      $(".http_header_element").hide();
-      $(".sdk_header_element").show();
-    }
-
-    $('#change_language_http').toggleClass('selected', language == 'http')
-    $('#change_language_sdk').toggleClass('selected', language == 'sdk')
-
-    return false;
-  }
-
-  function loadSwagger()
-  {
-    window.swaggerUi.headerView.trigger('update-swagger-ui', {url: DEFAULT_SWAGGER_URL})
-    changeLanguage('sdk');
-    return false;
-  }
-
-</script>
-
 </html>
