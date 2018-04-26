@@ -31,7 +31,6 @@
 
   <script type="text/javascript">
     const DEFAULT_API_VERSION_URL = "/versions";
-    const DEFAULT_SWAGGER_URL = "/api/3.0/swagger.json";
 
     function loadSwaggerUI(api_versioned_swagger_url) {
       return new Promise(function (resolve, reject) {
@@ -112,9 +111,13 @@
       })
     });
 
-    function changeApiVersion() {
+    function selectedApiVersionUrl() {
       let select_api_version = $('#select_api_version')[0];
-      url = select_api_version.selectedOptions[0].value;
+      return select_api_version.selectedOptions[0].value;
+    }
+
+    function changeApiVersion() {
+      url = selectedApiVersionUrl();
       window.swaggerUi.updateSwaggerUi({url: url});
     }
   </script>
@@ -271,7 +274,8 @@
 
     function loadSwagger()
     {
-      window.swaggerUi.headerView.trigger('update-swagger-ui', {url: DEFAULT_SWAGGER_URL})
+      url = selectedApiVersionUrl();
+      window.swaggerUi.updateSwaggerUi({url: url});
       changeLanguage('sdk');
       return false;
     }

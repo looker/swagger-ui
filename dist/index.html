@@ -93,21 +93,7 @@
             else
               resolve(response.json());
           })
-      })
-      // We'll end up here if the fetch() fails or if the browser doesn't support fetch()
-        .catch(function () {
-          return {
-            'supported_versions': [
-              {
-                "version": "3.0",
-                "full_version": "3.0.0",
-                "status": "current",
-                "swagger_url": DEFAULT_SWAGGER_URL,
-              }
-            ],
-          }
-        })
-        .then(function(versionJson) {
+      }).then(function(versionJson) {
           let select_api_version = $('#select_api_version')[0];
 
           select_api_version.options.length = 0;
@@ -119,16 +105,20 @@
             select_api_version.add(new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected))
           }
           return select_api_version.selectedOptions[0].value;
-        }).then(function (selected_api_swagger_url) {
+      }).then(function (selected_api_swagger_url) {
         return loadSwaggerUI(selected_api_swagger_url);
       }).catch(function (errorMsg) {
         window.swaggerUi.showMessage(errorMsg);
       })
     });
 
-    function changeApiVersion() {
+    function selectedApiVersionUrl() {
       let select_api_version = $('#select_api_version')[0];
-      url = select_api_version.selectedOptions[0].value;
+      return select_api_version.selectedOptions[0].value;
+    }
+
+    function changeApiVersion() {
+      url = selectedApiVersionUrl();
       window.swaggerUi.updateSwaggerUi({url: url});
     }
   </script>
@@ -285,7 +275,8 @@
 
     function loadSwagger()
     {
-      window.swaggerUi.headerView.trigger('update-swagger-ui', {url: DEFAULT_SWAGGER_URL})
+      url = selectedApiVersionUrl();
+      window.swaggerUi.updateSwaggerUi({url: url});
       changeLanguage('sdk');
       return false;
     }
