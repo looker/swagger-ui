@@ -39,14 +39,12 @@
           dom_id: "swagger-ui-container",
           supportedSubmitMethods: ['get', 'post', 'put', 'patch', 'delete'],
           onComplete: function(swaggerApi, swaggerUi){
-            log("Loaded SwaggerUI");
             $('pre code').each(function(i, e) {
               hljs.highlightBlock(e)
             });
             resolve(window.swaggerUi);
           },
           onFailure: function(data) {
-            log("Unable to Load SwaggerUI");
             reject(
               "<p>Looks like you need to log in! Don't have a client ID and secret? Go to Admin > User, " +
               "click the edit button next to your user, and generate an API 3 key.</p>" +
@@ -222,7 +220,6 @@
           var access_token = data.access_token
           var access_token_expires = new Date(new Date().getTime() + (data.expires_in * 1000));
 
-          // console.log({access_token: access_token, access_token_expires: access_token_expires})
           setAuth(access_token, access_token_expires)
 
           console.log("login succeeded")
