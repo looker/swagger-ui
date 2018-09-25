@@ -1179,13 +1179,13 @@ var Property = function(name, obj, required) {
   }
   this.name = name;
   if (this.schema.description) {
-    // marked defaults to wrapping every string with a paragraph tag
+    // marked() defaults to wrapping every string with a paragraph tag
     // This wreaks havoc on text flow in property descriptions.
     // Yes, this could be fixed with a bunch of CSS but its just easier
-    // to override the render to emit a span instead.
+    // to override the renderer to emit a span instead.
     var spanner = new marked.Renderer();
     spanner.paragraph = function (text) {
-      return `<span>${text}</span>`;
+      return "<span>" + text + "</span>"
     };
     this.description = marked(this.schema.description, {renderer: spanner});
   }
