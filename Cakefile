@@ -101,6 +101,8 @@ task 'dist', 'Build a distribution', ->
     console.log '   : Copied bootstrap dependencies'
     exec 'cp -r node_modules/jquery/dist/jquery.min.js dist/lib'
     console.log '   : Copied jquery dependencies'
+    exec 'cp -r node_modules/handlebars/dist/handlebars.min.js dist/lib'
+    console.log '   : Copied handlebars dependencies'
     exec 'cp -r src/main/html/* dist'
     console.log '   : Copied html dependencies'
     console.log '   !'
