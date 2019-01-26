@@ -82,37 +82,47 @@ if (Function.prototype.bind && console && typeof console.log == "object") {
 var Docs = {
 
 	shebang: function() {
+		Docs.show_topic(Docs.shebang_parse_topic($.param.fragment()))
+	},
 
-		// If shebang has an operation nickname in it..
-		// e.g. /docs/#!/words/get_search
-		var fragments = $.param.fragment().split('/');
-		fragments.shift(); // get rid of the bang
+	shebang_parse_topic: function(topic_str) {
+	// If shebang has an operation nickname in it..
+	// e.g. /docs/#!/3.0/group/topic
 
-		switch (fragments.length) {
-			case 1:
-				// Expand all operations for the resource and scroll to it
-				var dom_id = 'resource_' + fragments[0];
-
-				Docs.expandEndpointListForResource(fragments[0]);
-				$("#"+dom_id).slideto({highlight: false});
-				break;
-			case 2:
-				// Refer to the endpoint DOM element, e.g. #words_get_search
-
-        // Expand Resource
-        Docs.expandEndpointListForResource(fragments[0]);
-        $("#"+dom_id).slideto({highlight: false});
-
-        // Expand operation
-				var li_dom_id = fragments.join('_');
-				var li_content_dom_id = li_dom_id + "_content";
-
-
-				Docs.expandOperation($('#'+li_content_dom_id));
-				$('#'+li_dom_id).slideto({highlight: false});
-				break;
+	// this regex matches all of these patterns
+	// 		!/3.0
+	// 		!/3.0/group
+	// 		!/3.0/group/topic
+	// 		!/group
+	// 		!/group/topic
+	//
+		const matches = topic_str.match(/^!(?:\/(\d+\.\d+))?(?:\/(\w+)(?:\/(\w+))?)?/);
+		if (matches) {
+			return {
+				api_version: matches[1],
+				group: matches[2],
+				topic: matches[3],
+			}
 		}
+		return null
+  },
 
+	show_topic: function(topic) {
+		if (topic) {
+			if (topic.group) {
+				// Expand all operations for the resource and scroll to it
+				Docs.expandEndpointListForResource(topic.group);
+				document.getElementById("resource_" + topic.group).scrollIntoView()
+
+				if (topic.topic) {
+					// Expand operation
+					const li_dom_id = topic.group + "_" + topic.topic;
+
+					Docs.expandOperation(document.getElementById(li_dom_id + "_content"));
+					document.getElementById(li_dom_id).scrollIntoView();
+				}
+			}
+		}
 	},
 
 	toggleEndpointListForResource: function(resource) {
@@ -123,17 +133,17 @@ var Docs = {
 	expandEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
 		if (resource == '') {
-			$('.resource ul.endpoints').collapse('show');
+			$('.resource ul.endpoints').show();
 			return;
 		}
 
-		$('li#resource_' + resource + ' ul.endpoints').collapse('show');
+		$('li#resource_' + resource + ' ul.endpoints').show();
 	},
 
 	// Collapse resource and mark as explicitly closed
 	collapseEndpointListForResource: function(resource) {
 		var resource = Docs.escapeResourceName(resource);
-		$('li#resource_' + resource + ' ul.endpoints').collapse('hide');
+		$('li#resource_' + resource + ' ul.endpoints').hide();
 	},
 
 	expandOperationsForResource: function(resource) {
@@ -141,7 +151,7 @@ var Docs = {
 		Docs.expandEndpointListForResource(resource);
 
 		if (resource == '') {
-			$('.resource ul.endpoints li.operation div.content').slideDown();
+			$('.resource ul.endpoints li.operation div.content').show();
 			return;
 		}
 
@@ -164,10 +174,10 @@ var Docs = {
 	},
 
 	expandOperation: function(elem) {
-		elem.slideDown();
+		elem.style.display = "block";
 	},
 
 	collapseOperation: function(elem) {
-		elem.slideUp();
+		elem.style.display = "none";
 	}
 };

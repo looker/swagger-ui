@@ -42,6 +42,7 @@
             $('pre code').each(function(i, e) {
               hljs.highlightBlock(e)
             });
+            window.doHashChange();
             resolve(window.swaggerUi);
           },
           onFailure: function(data) {
@@ -78,10 +79,6 @@
       setInterval(function(){window.updateLoginButton()}, 5000);
       $('#login').mouseenter(function(){window.updateLoginButton()});
 
-      window.onhashchange = function () {
-        Docs.shebang();
-      }
-
       new Promise(function (resolve, reject) {
         return fetch(DEFAULT_API_VERSION_URL)
           .then(function (response) {
@@ -91,32 +88,99 @@
               resolve(response.json());
           })
       }).then(function(versionJson) {
-          let select_api_version = $('#select_api_version')[0];
+        window.swagger_versions = versionJson.supported_versions.reduce((hash, v) => {
+          hash[v.version] = v
+          return hash
+        }, {});
+        const select_api_version = $('#select_api_version')[0];
 
-          select_api_version.options.length = 0;
-          for (let v of versionJson.supported_versions) {
-            if (v.status.startsWith('internal_'))
-              continue;
+        const topic = Docs.shebang_parse_topic($.param.fragment());
 
-            let selected = v.status === 'current';
-            select_api_version.add(new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected))
-          }
-          return select_api_version.selectedOptions[0].value;
+        select_api_version.options.length = 0;
+        for (let v of versionJson.supported_versions) {
+          if (v.status.startsWith('internal_'))
+            continue;
+
+          // If there's an api version in the url fragment, select that
+          // Otherwise, select the default/current version as indicated in the versionJson
+          const selected = topic && topic.api_version ? v.version === topic.api_version : v.status === 'current';
+          const option = new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected)
+          option.setAttributeNS('looker', 'api-version', v.version)
+          select_api_version.add(option)
+        }
+        return select_api_version.selectedOptions[0].value;
       }).then(function (selected_api_swagger_url) {
-        return loadSwaggerUI(selected_api_swagger_url);
+        return loadSwaggerUI(selected_api_swagger_url)
+      }).then((swaggerUi) => {
+        // hook this event after swaggerUI is loaded
+        window.onhashchange = function () {
+          window.doHashChange()
+        };
       }).catch(function (errorMsg) {
-        window.swaggerUi.showMessage(errorMsg);
+        if (window.swaggerUi) {
+          window.swaggerUi.showMessage(errorMsg);
+        } else {
+          alert(errorMsg)
+        }
       })
     });
 
+    function version_selector() {
+      return $('#select_api_version')[0]
+    }
+
+    function setSelectedApiVersionUrl(swaggerUrl) {
+      const vs = version_selector()
+      if (vs.selectedOptions || vs.selectedOptions[0].value !== swaggerUrl) {
+        version_selector().value = swaggerUrl;
+        changeApiVersion()
+      }
+    }
+
+    function currentlySelectedApiVersion() {
+      return version_selector().selectedOptions[0].getAttributeNS('looker','api-version')
+    }
+
+    // returns the HTMLOptionElement matching the indicated apiVersion
+    function findApiVersion(apiVersion) {
+      for (let o of version_selector().options) {
+        if (o.getAttributeNS('looker', 'api-version') === apiVersion) {
+          return o
+        }
+      }
+      return null
+    }
+
+    function doHashChange() {
+      const topic = Docs.shebang_parse_topic($.param.fragment());
+      if (topic) {
+        if (topic.api_version) {
+          if (topic.api_version != currentlySelectedApiVersion()) {
+            const found = findApiVersion(topic.api_version)
+            if (found) {
+              // This will kick off a swagger reload of the appropriate
+              // version if != current selection
+              setSelectedApiVersionUrl(found.value)
+              // no point in doing show_topic here, since
+              // the topics of the new api haven't loaded yet.
+              // loadSwaggerUI() will retry doHashChange() after
+              // new API is loaded.
+              return
+            }
+          }
+        }
+        Docs.show_topic(topic)
+      }
+    }
+
     function selectedApiVersionUrl() {
-      let select_api_version = $('#select_api_version')[0];
-      return select_api_version.selectedOptions[0].value;
+      const vs = version_selector()
+      return vs && vs.selectedOptions && vs.selectedOptions[0].value;
     }
 
     function changeApiVersion() {
       url = selectedApiVersionUrl();
-      window.swaggerUi.updateSwaggerUi({url: url});
+      return window.swaggerUi.updateSwaggerUi({url: url});
     }
   </script>
 
