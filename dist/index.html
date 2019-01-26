@@ -88,32 +88,34 @@
               resolve(response.json());
           })
       }).then(function(versionJson) {
-          window.swagger_versions = versionJson.supported_versions;
-          let select_api_version = $('#select_api_version')[0];
+        window.swagger_versions = versionJson.supported_versions.reduce((hash, v) => {
+          hash[v.version] = v
+          return hash
+        }, {});
+        const select_api_version = $('#select_api_version')[0];
 
-          const topic = Docs.shebang_parse_topic($.param.fragment());
+        const topic = Docs.shebang_parse_topic($.param.fragment());
 
-          select_api_version.options.length = 0;
-          for (let v of versionJson.supported_versions) {
-            if (v.status.startsWith('internal_'))
-              continue;
+        select_api_version.options.length = 0;
+        for (let v of versionJson.supported_versions) {
+          if (v.status.startsWith('internal_'))
+            continue;
 
-            // If there's an api version in the url fragment, select that
-            // Otherwise, select the default/current version as indicated in the versionJson
-            const selected = topic && topic.api_version ? v.version === topic.api_version : v.status === 'current';
-            const option = new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected)
-            option.setAttributeNS('looker', 'api-version', v.version)
-            select_api_version.add(option)
-          }
-          return select_api_version.selectedOptions[0].value;
+          // If there's an api version in the url fragment, select that
+          // Otherwise, select the default/current version as indicated in the versionJson
+          const selected = topic && topic.api_version ? v.version === topic.api_version : v.status === 'current';
+          const option = new Option(v.version + ' - ' + v.status, v.swagger_url, selected, selected)
+          option.setAttributeNS('looker', 'api-version', v.version)
+          select_api_version.add(option)
+        }
+        return select_api_version.selectedOptions[0].value;
       }).then(function (selected_api_swagger_url) {
         return loadSwaggerUI(selected_api_swagger_url)
-          .then((swaggerUi) => {
-            // hook this event after swaggerUI is loaded
-            window.onhashchange = function () {
-              window.doHashChange()
-            };
-          })
+      }).then((swaggerUi) => {
+        // hook this event after swaggerUI is loaded
+        window.onhashchange = function () {
+          window.doHashChange()
+        };
       }).catch(function (errorMsg) {
         if (window.swaggerUi) {
           window.swaggerUi.showMessage(errorMsg);
