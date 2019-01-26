@@ -89,11 +89,6 @@ class SwaggerUi extends Backbone.Router
       when "full" then @expandAll()
       when "list" then @listAll()
     @options.onComplete(@api, @) if @options.onComplete
-    setTimeout(
-      =>
-        Docs.shebang()
-      400
-    )
 
   buildUrl: (base, url) ->
     log "base is " + base
