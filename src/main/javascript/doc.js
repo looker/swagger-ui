@@ -81,8 +81,18 @@ if (Function.prototype.bind && console && typeof console.log == "object") {
 
 var Docs = {
 
-	shebang: function() {
-		Docs.show_topic(Docs.shebang_parse_topic($.param.fragment()))
+	navigate_to_topic: function (topic) {
+		var newHash = '!';
+		if (topic.api_version) {
+			newHash += '/' + topic.api_version
+		}
+		if (topic.group) {
+			newHash += '/' + topic.group;
+			if (topic.topic) {
+				newHash += '/' + topic.topic
+			}
+		}
+		location.hash = newHash
 	},
 
 	shebang_parse_topic: function(topic_str) {
@@ -96,7 +106,7 @@ var Docs = {
 	// 		!/group
 	// 		!/group/topic
 	//
-		const matches = topic_str.match(/^!(?:\/(\d+\.\d+))?(?:\/(\w+)(?:\/(\w+))?)?/);
+		const matches = topic_str.match(/^#?!(?:\/(\d+\.\d+))?(?:\/(\w+)(?:\/(\w+))?)?/);
 		if (matches) {
 			return {
 				api_version: matches[1],
@@ -174,10 +184,11 @@ var Docs = {
 	},
 
 	expandOperation: function(elem) {
-		elem.style.display = "block";
+		(elem.style || elem[0].style).display = "block";
 	},
 
 	collapseOperation: function(elem) {
-		elem.style.display = "none";
-	}
+		// normalize across jquery collection & getElementById singleton
+		(elem.style || elem[0].style).display = "none";
+	},
 };

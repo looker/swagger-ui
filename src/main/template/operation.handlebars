@@ -4,20 +4,20 @@
       <div class='heading'>
         <h3>
           <span class='sdk sdk_header_element'>
-            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
           </span>
           <span class='http_method http_header_element' hidden='hidden'>
-            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
           </span>
           <span class='path http_header_element' hidden='hidden'>
-            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
           </span>
           <span class='sdk_fn_name sdk_header_element'>
-            <a href='#!/{{parentId}}/{{nickname}}' class="toggleOperation" {{#if deprecated}}deprecated{{/if}}>{{{ruby_signature}}}</a>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation" {{#if deprecated}}deprecated{{/if}}>{{{ruby_signature}}}</a>
           </span>
         </h3>
         <span class='status status_{{looker_status}} tooltip_anchor'>
-          <a href='#!/{{parentId}}/{{nickname}}'
+          <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}'
              class="toggleOperation">
             {{{looker_status_text}}}
           </a>
@@ -27,7 +27,7 @@
         </span>
         <ul class='options'>
           <li>
-            <a href='#!/{{parentId}}/{{nickname}}' class='toggleOperation summary'>{{{summary}}}</a>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class='toggleOperation summary'>{{{summary}}}</a>
           </li>
         </ul>
       </div>
