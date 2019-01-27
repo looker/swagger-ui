@@ -83,8 +83,18 @@ if (Function.prototype.bind && console && typeof console.log == "object") {
 
 var Docs = {
 
-	shebang: function() {
-		Docs.show_topic(Docs.shebang_parse_topic($.param.fragment()))
+	navigate_to_topic: function (topic) {
+		var newHash = '!';
+		if (topic.api_version) {
+			newHash += '/' + topic.api_version
+		}
+		if (topic.group) {
+			newHash += '/' + topic.group;
+			if (topic.topic) {
+				newHash += '/' + topic.topic
+			}
+		}
+		location.hash = newHash
 	},
 
 	shebang_parse_topic: function(topic_str) {
@@ -98,7 +108,7 @@ var Docs = {
 	// 		!/group
 	// 		!/group/topic
 	//
-		const matches = topic_str.match(/^!(?:\/(\d+\.\d+))?(?:\/(\w+)(?:\/(\w+))?)?/);
+		const matches = topic_str.match(/^#?!(?:\/(\d+\.\d+))?(?:\/(\w+)(?:\/(\w+))?)?/);
 		if (matches) {
 			return {
 				api_version: matches[1],
@@ -176,12 +186,13 @@ var Docs = {
 	},
 
 	expandOperation: function(elem) {
-		elem.style.display = "block";
+		(elem.style || elem[0].style).display = "block";
 	},
 
 	collapseOperation: function(elem) {
-		elem.style.display = "none";
-	}
+		// normalize across jquery collection & getElementById singleton
+		(elem.style || elem[0].style).display = "none";
+	},
 };
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
@@ -346,16 +357,22 @@ templates['operation'] = template({"1":function(container,depth0,helpers,partial
     + "_"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
     + "'>\n      <div class='heading'>\n        <h3>\n          <span class='sdk sdk_header_element'>\n            <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
     + "' class=\"toggleOperation\">SDK</a>\n          </span>\n          <span class='http_method http_header_element' hidden='hidden'>\n            <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
     + "' class=\"toggleOperation\">"
     + alias4(((helper = (helper = helpers.method || (depth0 != null ? depth0.method : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"method","hash":{},"data":data}) : helper)))
     + "</a>\n          </span>\n          <span class='path http_header_element' hidden='hidden'>\n            <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
@@ -364,6 +381,8 @@ templates['operation'] = template({"1":function(container,depth0,helpers,partial
     + "\">"
     + alias4(((helper = (helper = helpers.path || (depth0 != null ? depth0.path : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"path","hash":{},"data":data}) : helper)))
     + "</a>\n          </span>\n          <span class='sdk_fn_name sdk_header_element'>\n            <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
@@ -374,6 +393,8 @@ templates['operation'] = template({"1":function(container,depth0,helpers,partial
     + "</a>\n          </span>\n        </h3>\n        <span class='status status_"
     + alias4(((helper = (helper = helpers.looker_status || (depth0 != null ? depth0.looker_status : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"looker_status","hash":{},"data":data}) : helper)))
     + " tooltip_anchor'>\n          <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
@@ -382,6 +403,8 @@ templates['operation'] = template({"1":function(container,depth0,helpers,partial
     + "\n          </a>\n          <span class='tooltip_popup'>\n            "
     + alias4(((helper = (helper = helpers.looker_status_description || (depth0 != null ? depth0.looker_status_description : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"looker_status_description","hash":{},"data":data}) : helper)))
     + "\n          </span>\n        </span>\n        <ul class='options'>\n          <li>\n            <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"parentId","hash":{},"data":data}) : helper)))
     + "/"
     + alias4(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"nickname","hash":{},"data":data}) : helper)))
@@ -714,6 +737,8 @@ templates['resource'] = template({"1":function(container,depth0,helpers,partials
   "<div class='heading'>\n  <h2 data-toggle=\"collapse\" data-target='#"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "_endpoint_list'  aria-expanded=\"false\" class=\"collapsed\">\n    <a href='#!/"
+    + alias4(((helper = (helper = helpers.api_version || (depth0 != null ? depth0.api_version : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"api_version","hash":{},"data":data}) : helper)))
+    + "/"
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
     + "' data-id=\""
     + alias4(((helper = (helper = helpers.id || (depth0 != null ? depth0.id : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data}) : helper)))
@@ -1083,6 +1108,8 @@ templates['status_code'] = template({"compiler":[7,">= 4.0.0"],"main":function(c
       if (!this.model.info.version) {
         this.model.info.version = this.model.apiVersion;
       }
+      this.model.info.full_version = this.model.info.version;
+      this.model.info.version = this.model.info.version.split('.').slice(0, 2).join('.');
       if (this.model.info.description) {
         this.model.info.description = marked(this.model.info.description);
       } else {
@@ -1130,6 +1157,7 @@ templates['status_code'] = template({"compiler":[7,">= 4.0.0"],"main":function(c
           counter += 1;
         }
         resource.id = id;
+        resource.api_version = this.model.info.version;
         resources[id] = resource;
         this.addResource(resource, this.model.auths);
       }
@@ -1195,6 +1223,7 @@ templates['status_code'] = template({"compiler":[7,">= 4.0.0"],"main":function(c
         methods[id] = operation;
         operation.nickname = id;
         operation.parentId = this.model.id;
+        operation.api_version = this.model.api_version;
         this.addOperation(operation);
       }
       $('.toggleEndpointList', this.el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'));

@@ -25,6 +25,9 @@ class MainView extends Backbone.View
     if !@model.info.version
       @model.info.version = @model.apiVersion
 
+    @model.info.full_version = @model.info.version
+    @model.info.version = @model.info.version.split('.').slice(0,2).join('.')
+
     if @model.info.description
       @model.info.description = marked(@model.info.description)
     else
@@ -66,6 +69,7 @@ class MainView extends Backbone.View
         id = id + "_" + counter
         counter += 1
       resource.id = id
+      resource.api_version = @model.info.version
       resources[id] = resource
       @addResource resource, @model.auths
     @

@@ -38,11 +38,13 @@
           url: api_versioned_swagger_url,
           dom_id: "swagger-ui-container",
           supportedSubmitMethods: ['get', 'post', 'put', 'patch', 'delete'],
+          // This onComplete will also be called by subsequent
+          // swaggerUi.updateSwaggerUi calls
           onComplete: function(swaggerApi, swaggerUi){
             $('pre code').each(function(i, e) {
               hljs.highlightBlock(e)
             });
-            window.doHashChange();
+            onHashChanged()
             resolve(window.swaggerUi);
           },
           onFailure: function(data) {
@@ -60,8 +62,6 @@
         });
 
         window.swaggerUi.load();
-
-        return window.swaggerUi;
       });
     }
 
@@ -94,7 +94,7 @@
         }, {});
         const select_api_version = $('#select_api_version')[0];
 
-        const topic = Docs.shebang_parse_topic($.param.fragment());
+        const topic = Docs.shebang_parse_topic(location.hash);
 
         select_api_version.options.length = 0;
         for (let v of versionJson.supported_versions) {
@@ -114,7 +114,7 @@
       }).then((swaggerUi) => {
         // hook this event after swaggerUI is loaded
         window.onhashchange = function () {
-          window.doHashChange()
+          window.onHashChanged()
         };
       }).catch(function (errorMsg) {
         if (window.swaggerUi) {
@@ -129,16 +129,23 @@
       return $('#select_api_version')[0]
     }
 
+    function getSelectedApiVersionUrl() {
+      const vs = version_selector()
+      return vs && vs.selectedOptions && vs.selectedOptions[0].value
+    }
+
     function setSelectedApiVersionUrl(swaggerUrl) {
       const vs = version_selector()
       if (vs.selectedOptions || vs.selectedOptions[0].value !== swaggerUrl) {
         version_selector().value = swaggerUrl;
-        changeApiVersion()
+        return window.swaggerUi.updateSwaggerUi({url: swaggerUrl});
       }
     }
 
-    function currentlySelectedApiVersion() {
-      return version_selector().selectedOptions[0].getAttributeNS('looker','api-version')
+    function getSelectedApiVersion() {
+      const vs = version_selector()
+      return vs && vs.selectedOptions
+              && version_selector().selectedOptions[0].getAttributeNS('looker','api-version')
     }
 
     // returns the HTMLOptionElement matching the indicated apiVersion
@@ -151,11 +158,11 @@
       return null
     }
 
-    function doHashChange() {
-      const topic = Docs.shebang_parse_topic($.param.fragment());
+    function onHashChanged() {
+      const topic = Docs.shebang_parse_topic(location.hash);
       if (topic) {
         if (topic.api_version) {
-          if (topic.api_version != currentlySelectedApiVersion()) {
+          if (topic.api_version != getSelectedApiVersion()) {
             const found = findApiVersion(topic.api_version)
             if (found) {
               // This will kick off a swagger reload of the appropriate
@@ -173,14 +180,19 @@
       }
     }
 
-    function selectedApiVersionUrl() {
-      const vs = version_selector()
-      return vs && vs.selectedOptions && vs.selectedOptions[0].value;
-    }
-
-    function changeApiVersion() {
-      url = selectedApiVersionUrl();
-      return window.swaggerUi.updateSwaggerUi({url: url});
+    function onVersionSelectionChanged() {
+      const version = getSelectedApiVersion()
+      if (version) {
+        // When switching between API versions via the dropdown list
+        // try to preserve the selected endpoint across the version change
+        // Just take the current topic vector and replace the api_version
+        // portion, preserving the group and topic portions, if present.
+        let topic = Docs.shebang_parse_topic(location.hash)
+        if (topic) {
+          topic.api_version = version
+          Docs.navigate_to_topic(topic)
+        }
+      }
     }
   </script>
 
@@ -335,7 +347,7 @@
 
     function loadSwagger()
     {
-      url = selectedApiVersionUrl();
+      url = getSelectedApiVersionUrl();
       window.swaggerUi.updateSwaggerUi({url: url});
       changeLanguage('sdk');
       return false;
@@ -368,7 +380,7 @@
       <form id='load' action="" onsubmit="return loadSwagger();">
         <input type="submit" name='load_swagger' id='load_swagger' value="Reload">
       </form>
-      <select id="select_api_version" onchange='changeApiVersion()'/>
+      <select id="select_api_version" onchange='onVersionSelectionChanged()'/>
       <input type='button' id='change_language_http' onclick='changeLanguage("http")' value='HTTP'/><input type='button' id='change_language_sdk' class='selected' onclick='changeLanguage("sdk")' value='SDK'/>
     </div>
 

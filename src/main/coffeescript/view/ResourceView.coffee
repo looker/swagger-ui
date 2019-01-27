@@ -24,6 +24,7 @@ class ResourceView extends Backbone.View
 
       operation.nickname = id
       operation.parentId = @model.id
+      operation.api_version = @model.api_version
       @addOperation operation
 
     $('.toggleEndpointList', @el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'))
