@@ -162,7 +162,8 @@
       const topic = Docs.shebang_parse_topic(location.hash);
       if (topic) {
         if (topic.api_version) {
-          if (topic.api_version != getSelectedApiVersion()) {
+          rendered_api_version = swaggerUi && swaggerUi.api && swaggerUi.api.info.version
+          if (topic.api_version != rendered_api_version) {
             const found = findApiVersion(topic.api_version)
             if (found) {
               // This will kick off a swagger reload of the appropriate
