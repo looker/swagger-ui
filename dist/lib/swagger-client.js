@@ -313,6 +313,8 @@ var SwaggerClient = function(url, options) {
   if (options.url != null)
     this.url = options.url;
 
+  this.headers = options.headers;
+
   if (options.success != null)
     this.success = options.success;
 
@@ -340,9 +342,7 @@ SwaggerClient.prototype.build = function() {
     useXHR: this.useXHR,
     url: this.url,
     method: "get",
-    headers: {
-      accept: "application/json, */*"
-    },
+    headers: Object.assign( {accept: "application/json, */*"}, this.headers),
     on: {
       error: function(response) {
         if (self.url.substring(0, 4) !== 'http')
@@ -981,7 +981,7 @@ Operation.prototype.setContentTypes = function(args, opts) {
   var definedFormParams = [];
   var definedFileParams = [];
   var body = args.body;
-  var headers = {};
+  var headers = Object.assign({}, opts.parent.options.swaggerOptions.headers);
 
   // get params from the operation and set them in definedFileParams, definedFormParams, headers
   var i;
@@ -1363,6 +1363,8 @@ SwaggerHttp.prototype.execute = function(obj) {
     this.useJQuery = obj.useJQuery;
   else
     this.useJQuery = this.isIE8();
+
+  obj = obj || {};
 
   if (obj && (typeof obj.useXHR === 'boolean') && obj.useXHR)
     return new XHRHttpClient().execute(obj);
