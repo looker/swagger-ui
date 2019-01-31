@@ -30,7 +30,8 @@
   <script src='lib/swagger-oauth.js' type='text/javascript'></script>
 
   <script type="text/javascript">
-    const DEFAULT_API_VERSION_URL = "/versions";
+    const API_VERSION_URL = "/versions";
+    const LOOKER_APPID_HEADER = Object.freeze({'x-looker-appid': 'Looker API Explorer'});
 
     function loadSwaggerUI(api_versioned_swagger_url) {
       return new Promise(function (resolve, reject) {
@@ -38,6 +39,7 @@
           url: api_versioned_swagger_url,
           dom_id: "swagger-ui-container",
           supportedSubmitMethods: ['get', 'post', 'put', 'patch', 'delete'],
+          headers: LOOKER_APPID_HEADER,
           // This onComplete will also be called by subsequent
           // swaggerUi.updateSwaggerUi calls
           onComplete: function(swaggerApi, swaggerUi){
@@ -80,13 +82,14 @@
       $('#login').mouseenter(function(){window.updateLoginButton()});
 
       new Promise(function (resolve, reject) {
-        return fetch(DEFAULT_API_VERSION_URL)
-          .then(function (response) {
-            if (response.status == '404')
-              reject(response.statusText);
-            else
-              resolve(response.json());
-          })
+        return fetch(API_VERSION_URL, {
+          headers: Object.assign({}, LOOKER_APPID_HEADER),
+        }).then(function (response) {
+          if (response.status === 404)
+            reject(response.statusText);
+          else
+            resolve(response.json());
+        })
       }).then(function(versionJson) {
         window.swagger_versions = versionJson.supported_versions.reduce((hash, v) => {
           hash[v.version] = v
