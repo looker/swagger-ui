@@ -43,6 +43,13 @@
           // This onComplete will also be called by subsequent
           // swaggerUi.updateSwaggerUi calls
           onComplete: function(swaggerApi, swaggerUi){
+            // Hide "beta" tags in legacy APIs.
+            // Still show "deprecated" tags, though, as those are still meaningful
+            if (window.swagger_versions[swaggerApi.info.version].status == 'legacy') {
+              $('.status_beta').hide()
+            } else {
+              $('.status_beta').show()
+            }
             $('pre code').each(function(i, e) {
               hljs.highlightBlock(e)
             });
