@@ -3,18 +3,24 @@
     <li class='{{method}} operation' id='{{parentId}}_{{nickname}}'>
       <div class='heading'>
         <h3>
-          <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
           <span class='sdk sdk_header_element'>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation">SDK</a>
           </span>
           <span class='http_method http_header_element' hidden='hidden'>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation">{{method}}</a>
           </span>
           <span class='path http_header_element' hidden='hidden'>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation {{#if deprecated}}deprecated{{/if}}">{{path}}</a>
           </span>
           <span class='sdk_fn_name sdk_header_element'>
+            <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}' class="toggleOperation" {{#if deprecated}}deprecated{{/if}}>{{{ruby_signature}}}</a>
           </span>
         </h3>
         <span class='status status_{{looker_status}} tooltip_anchor'>
+          <a href='#!/{{api_version}}/{{parentId}}/{{nickname}}'
+             class="toggleOperation">
             {{{looker_status_text}}}
+          </a>
           <span class='tooltip_popup'>
             {{looker_status_description}}
           </span>
