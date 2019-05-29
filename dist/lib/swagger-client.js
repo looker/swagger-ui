@@ -581,6 +581,10 @@ var Operation = function(parent, operationId, httpMethod, path, args, definition
   this.operation = args;
   this.deprecated = args.deprecated;
   this.undocumented = args['x-looker-status'] == 'undocumented';
+  this.activity = args['x-looker-activity-type'];
+  if (this.activity === 'none') {
+    this.activity = null
+  }
 
   this.looker_status = args['x-looker-status'];
   switch (this.looker_status) {

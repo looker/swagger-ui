@@ -37,6 +37,13 @@
         {{/if}}
         {{#if description}}
         <h4>Implementation Notes</h4>
+        {{#if activity}}
+        <span class="activity activity_{{activity}} tooltip_anchor">{{activity}}
+            <span class='tooltip_popup'>
+                Call volume for this endpoint counts toward the "{{activity}}" API activity category.
+            </span>
+        </span>
+        {{/if}}
         <p>{{{description}}}</p>
         {{/if}}
         {{#oauth}}

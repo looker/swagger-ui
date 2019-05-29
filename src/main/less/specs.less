@@ -747,6 +747,8 @@
                                 }
                             }
                             div.content {
+                                float: none;
+                                clear: both;
                                 border-top: none;
                                 padding: 10px;
                                 -moz-border-radius-bottomleft: 6px;
@@ -762,16 +764,44 @@
                                 -khtml-border-bottom-right-radius: 6px;
                                 border-bottom-right-radius: 6px;
                                 margin: 0 0 20px;
+                                span.activity {
+                                    overflow: hidden;
+                                    display: inline-block;
+                                    clear: none;
+                                    float: right;
+                                    width: auto;
+                                    margin-right: 10px;
+                                    padding: 0;
+                                    box-sizing: content-box;
+                                    color: black;
+                                    text-decoration: none;
+                                    text-align: center;
+                                    font-size: 100%;
+                                    .tooltip_popup {
+                                        font-size: 0.7em;
+                                        padding: 10px;
+                                        margin-left: -120px;
+                                    }
+                                    .tooltip_popup::after {
+                                        left: 90%;
+                                    }
+                                }
                                 h4 {
+                                    clear: none;
+                                    float: left;
                                     font-size: 1.1em;
                                     margin: 0;
                                     padding: 15px 0 5px;
+                                }
+                                p {
+                                    float: none;
+                                    clear: both;
                                 }
                                 div.sandbox_header {
                                     float: none;
                                     clear: both;
                                     overflow: hidden;
-                                    display: block;
+                                    display: foobar;
                                     a {
                                         padding: 4px 0 0 10px;
                                         display: inline-block;
