@@ -65,7 +65,7 @@ task 'dist', 'Build a distribution', ->
       console.log '   : Compiling...'
       exec 'coffee --compile dist/_swagger-ui.coffee', (err, stdout, stderr) ->
         throw err if err
-        fs.unlink 'dist/_swagger-ui.coffee'
+        fs.unlinkSync 'dist/_swagger-ui.coffee'
         console.log '   : Combining with javascript...'
 
         fs.readFile 'package.json', 'utf8', (err, fileContents) ->
@@ -74,8 +74,8 @@ task 'dist', 'Build a distribution', ->
           exec 'echo "// version ' + obj.version + '" >> dist/swagger-ui.js'
           exec 'cat src/main/javascript/doc.js dist/_swagger-ui-templates.js dist/_swagger-ui.js >> dist/swagger-ui.js', (err, stdout, stderr) ->
             throw err if err
-            fs.unlink 'dist/_swagger-ui.js'
-            fs.unlink 'dist/_swagger-ui-templates.js'
+            fs.unlinkSync 'dist/_swagger-ui.js'
+            fs.unlinkSync 'dist/_swagger-ui-templates.js'
             console.log '   : Minifying all...'
             exec 'java -jar "./bin/yuicompressor-2.4.7.jar" --type js -o ' + 'dist/swagger-ui.min.js ' + 'dist/swagger-ui.js', (err, stdout, stderr) ->
               throw err if err
